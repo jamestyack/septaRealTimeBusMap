@@ -24,6 +24,9 @@
     <script type="text/javascript"
       src="https://maps.googleapis.com/maps/api/js?sensor=true">
     </script>
+    <script type="text/javascript"
+      src="/js/markerAnimate.js">
+    </script>
     <script type="text/javascript" src="/js/markerwithlabel.js"></script>
     <script type="text/javascript">
 // Enable the visual refresh
@@ -31,9 +34,18 @@ google.maps.visualRefresh = true;
 
 var map;
 var mapCenter = new google.maps.LatLng(39.951328, -75.168053);
-//var busNumbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25"
-//  , "26", "27", "28", "29", "30", "31", "33", "35", "37", "38", "39", "40", "42", "43", "44", "46", "47", "47M",  "48", "50"]; 
-var busNumbers = ["9", "12", "21", "42", "33", "17", "48"];
+
+//var busNumbers = ["2", "4", "6", "7", "8", "15", "16", "18", "22", "23", "26", "28", "33", "39", "47", "48", "53", "54", "55", "57", "60", "75", "77", "80"]; // north philly
+//var busNumbers = ["9", "12", "21", "25", "42", "33", "17", "38", "44", "47", "48", "57"]; // old city
+//var busNumbers = ["1", "2", "3", "4", "5", "7" , "10", "23", "27", "32", "34", "47M", "61", "78"]; // center city
+//var busNumbers = ["11", "13", "21", "30", "31", "35", "36", "38", "40", "42", "43", "46", "52", "64"] // west philly
+var busNumbers = ["18", "19", "20", "24", "25", "28", "50", "56", "58", "59", "66", "67", "70", "73", "78", "84", "88", "89"] // northeast
+//var busNumbers = ["2", "4", "7", "17", "25", "29", "36", "37", "47", "47M", "57", "64", "68", "79"]; // south philly
+//var busNumbers = ["27", "35", "61", "62", "65"]; // north west philly: fairmount park and manayunk
+//var busNumbers = ["36", "37", "68"]; // south west
+//var busNumbers = ["27", "90", "91", "92", "93", "94", "95", "96", "97", "98",  "99"]; // northwest: king of prussia, plymouth meeting, norristown
+//var busNumbers = [];
+
 var busesJson = new Array();
 var MY_MAPTYPE_ID = 'philly_style';
 var busMarkers = [];
@@ -77,6 +89,14 @@ function initialize() {
   var phillyMapType = new google.maps.StyledMapType(featureOpts, styledMapOptions);
   map.mapTypes.set(MY_MAPTYPE_ID, phillyMapType);
   
+
+  for (var i=0; i<busNumbers.length; i++) {
+    new google.maps.KmlLayer({
+    url: 'http://www.tyack.net/kml/s' + busNumbers[i] + ".kml"
+    }).setMap(map);
+  }
+  
+
 }
 
 $(document).ready(function() {
@@ -139,7 +159,7 @@ function addMarker(latLng, bus, busNumber) {
       busMarker = busMarkers[vehicleId];
       if (latLng.toString() != busMarker.getPosition().toString()) {
         console.debug(vehicleId + " moved, was " + busMarker.getPosition().toString() + " now " + latLng.toString());
-        busMarker.setPosition(latLng);
+        busMarker.animateTo(latLng);
       }
 
     } else {
