@@ -15,7 +15,9 @@ get '/septa/bus/:id' do
 	RestClient.get "http://www3.septa.org/transitview/bus_route_data/#{params[:id]}"
 end
 
-
+get '/' do
+	redirect '/index.html'
+end
 
 
 
