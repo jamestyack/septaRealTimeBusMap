@@ -41,7 +41,7 @@
 			var map;
 			var mapCenter = new google.maps.LatLng(39.951328, -75.168053);
 			var kmlLoc //= + "http://www.tyack.net/kml/s";
-			var kmlLoc = + "http://stormy-falls-9246.herokuapp.com/kml";
+			var kmlLoc = "http://stormy-falls-9246.herokuapp.com/kml/";
 
 			var routes = {};
 			routes["North"] = ["2", "4", "6", "7", "8", "15", "16", "18", "23", "26", "33", "39", "47", "48", "53", "54", "57", "60", "75"];
@@ -106,11 +106,10 @@
 				map.mapTypes.set(MY_MAPTYPE_ID, phillyMapType);
 
 				for (var i = 0; i < busNumbers.length; i++) {
-					consolue.debut
+					kmlUrl = "" + kmlLoc + busNumbers[i] + ".kml";
+					console.debug(kmlUrl);
 					new google.maps.KmlLayer({
-						kmlUrl = "" + kmlLoc + busNumbers[i] + ".kml";
-
-						url : kmlUrl;
+						url : kmlUrl
 					}).setMap(map);
 				}
 
