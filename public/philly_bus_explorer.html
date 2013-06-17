@@ -52,31 +52,23 @@
 			routes["CCNE"] = ["3", "78"];
 			routes["CCW"] = ["1", "10", "27", "32", "34", "36", "61"];
 			routes["CCFitler"] = ["7"];
-			
 			// northern liberties and fishtown
 			routes["NLIB"] = ["5", "25", "57"]			
-			
 			// old city / society hill
 			routes["OCNS"] = ["5", "25", "33", "17", "47", "48", "57"];
 			routes["OCW"] = ["9", "12", "21", "42", "38", "44"];
-			
 			// south philly - East of Broad
 			routes['SE'] = ["4", "25", "29", "47", "47M", "57", "64", "68", "79"];
 			// south philly - West of Broad
 			routes ['SW'] = ["2", "4", "7", "17", "29", "37", "64", "68", "79"];
-						
 			// west philly
 			routes['West'] = ["11", "13", "21", "30", "31", "35", "36", "38", "40", "42", "43", "46", "52", "64"];
-			
 			// ne philadelphia - Frankford to NE ...
 			routes['NE'] = ["3", "18", "19", "20", "24", "25", "28", "50", "56", "58", "59", "66", "67", "70", "73", "78", "84", "88", "89"]// northeast
-			
 			// north west philly: fairmount park and manayunk
 			routes['NW'] = ["9", "27", "35", "44", "61", "62", "65"];
-			
 			// south west - need to rename this
 			routes['Drex'] = ["36", "37", "68"];
-			
 			routes['King'] = ["27", "90", "91", "92", "93", "94", "95", "96", "97", "98", "99"];
 			// northwest: king of prussia, plymouth meeting, norristown
 			routes['test'] = ["103", "104", "105", "106", "107", "108", "109", "110", "111", "112", "113", "114", "115", "116", "117", "118", "119", "120"];
@@ -141,7 +133,7 @@
 				});
 				var zone = getURLParameter("zone");
 				if (zone == null) {
-					zone = 'CCNS'
+					zone = 'OCNS'
 				}
 				$('select').val(zone);
 				busNumbers = routes[zone];
