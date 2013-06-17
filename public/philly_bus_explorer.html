@@ -45,20 +45,38 @@
 
 			var routes = {};
 			routes["North"] = ["2", "4", "6", "7", "8", "15", "16", "18", "23", "26", "33", "39", "47", "48", "53", "54", "57", "60", "75"];
-			//routes["North"] = ["22", "28", "55", "77", "80"];
-			routes["OCNS"] = ["25", "33", "17", "47", "57"];
-			routes["OCW"] = ["9", "12", "21", "42", "38", "44", "48"];
-			// old city
-			routes["CC"] = ["1", "2", "3", "4", "5", "7", "10", "23", "27", "32", "34", "47M", "61", "78"];
+			
+			
 			// center city
-			routes['West'] = ["11", "13", "21", "30", "31", "35", "36", "38", "40", "42", "43", "46", "52", "64"]// west philly
-			routes['NE'] = ["18", "19", "20", "24", "25", "28", "50", "56", "58", "59", "66", "67", "70", "73", "78", "84", "88", "89"]// northeast
-			routes['South'] = ["2", "4", "7", "17", "25", "29", "36", "37", "47", "47M", "57", "64", "68", "79"];
-			// south philly
-			routes['NW'] = ["9", "27", "35", "61", "62", "65"];
+			routes["CCNS"] = ["1", "2", "3", "4", "17", "23", "47M"];
+			routes["CCNE"] = ["3", "78"];
+			routes["CCW"] = ["1", "10", "27", "32", "34", "36", "61"];
+			routes["CCFitler"] = ["7"];
+			
+			// northern liberties and fishtown
+			routes["NLIB"] = ["5", "25", "57"]			
+			
+			// old city / society hill
+			routes["OCNS"] = ["5", "25", "33", "17", "47", "48", "57"];
+			routes["OCW"] = ["9", "12", "21", "42", "38", "44"];
+			
+			// south philly - East of Broad
+			routes['SE'] = ["4", "25", "29", "47", "47M", "57", "64", "68", "79"];
+			// south philly - West of Broad
+			routes ['SW'] = ["2", "4", "7", "17", "29", "37", "64", "68", "79"];
+						
+			// west philly
+			routes['West'] = ["11", "13", "21", "30", "31", "35", "36", "38", "40", "42", "43", "46", "52", "64"];
+			
+			// ne philadelphia - Frankford to NE ...
+			routes['NE'] = ["3", "18", "19", "20", "24", "25", "28", "50", "56", "58", "59", "66", "67", "70", "73", "78", "84", "88", "89"]// northeast
+			
 			// north west philly: fairmount park and manayunk
-			routes['SW'] = ["36", "37", "68"];
-			// south west
+			routes['NW'] = ["9", "27", "35", "44", "61", "62", "65"];
+			
+			// south west - need to rename this
+			routes['Drex'] = ["36", "37", "68"];
+			
 			routes['King'] = ["27", "90", "91", "92", "93", "94", "95", "96", "97", "98", "99"];
 			// northwest: king of prussia, plymouth meeting, norristown
 			routes['test'] = ["103", "104", "105", "106", "107", "108", "109", "110", "111", "112", "113", "114", "115", "116", "117", "118", "119", "120"];
@@ -220,16 +238,21 @@
 		<!--<div id="menu" style="width: 100%; height: 20px"><button type="button" id="topButton">Activate</button></div>-->
 		<div id="header" style="width: 100%; height: 22px">
 			<select>
+				<option value="CCNS">Center City - Routes North < - > South</option>
+				<option value="CCNE">Center City - Routes North-East</option>
+				<option value="CCW">Center City - Routes West / NorthWest</option>
+				<option value="CCFitler">Center City Fitler</option>
+				<option value="NLIB">Northern Liberties and Fishtown</option>
+				<option value="OCNS">Old City/Society Hill - Routes North < - > South</option>
+				<option value="OCW">Old City/Society Hill - Routes West</option>
+				<option value="SE">South Philly East of Broad</option>
+				<option value="SW">South Philly West of Broad</option>
+				<option value="West">West Philly (University City)</option>
 				<option value="King">King of Prussia / Norristown</option>
-				<option value="North">North Philadelephia</option>
 				<option value="NE">North-East Philadelephia</option>
 				<option value="NW">North-West Philadelphia (Fairmount Park / Manayunk)</option>
-				<option value="OCNS">Old City - Routes North-South</option>
-				<option value="OCW">Old City - Routes West</option>
-				<option value="South">South Philly</option>
-				<option value="SW">South West</option>
+				<option value="Drex">Drexel Hill??????</option>
 				<option value="test">test</option>
-				<option value="West">West Philly (University City)</option>
 			</select>
 		</div>
 		<div id="map-canvas" style="width: 100%; height: 100%"></div>
