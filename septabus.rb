@@ -29,7 +29,8 @@ get '/septa/zone/:zone/routes' do
   zonesCol = settings.mongo_db['Zones']
   result = zonesCol.find_one({:_id => params[:zone]})
   puts "thanks mongo for telling us that zone #{params[:zone]} haz routes #{result["buses"]}"
-  return result["buses"].to_json
+  content_type :json
+  result["buses"].to_json
 end
 
 get '/' do
