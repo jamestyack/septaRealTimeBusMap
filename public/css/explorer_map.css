@@ -1,0 +1,22 @@
+html {
+	height: 100%
+}
+body {
+	height: 100%;
+	margin: 0;
+	padding: 0
+}
+#map-canvas {
+	height: 100%
+}
+.labels {
+	color: orange;
+	background-color: black;
+	font-family: "Lucida Grande", "Arial", sans-serif;
+	font-size: 9px;
+	font-weight: bold;
+	text-align: center;
+	width: 16px;
+	border: 1px solid #B0B0B0;
+	white-space: nowrap;
+}
