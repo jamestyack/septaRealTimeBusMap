@@ -5,39 +5,8 @@ var map;
 var mapCenter = new google.maps.LatLng(39.951328, -75.168053);
 var kmlLoc = "http://stormy-falls-9246.herokuapp.com/kml/";
 
-var routes = {};
-routes["North"] = ["2", "4", "6", "7", "8", "15", "16", "18", "23", "26", "33", "39", "47", "48", "53", "54", "57", "60", "75"];
-
-// center city
-routes["CCNS"] = ["1", "2", "3", "4", "17", "23", "47M"];
-routes["CCNE"] = ["3", "78"];
-routes["CCW"] = ["1", "10", "27", "32", "34", "36", "61"];
-routes["CCFitler"] = ["7"];
-// northern liberties and fishtown
-routes["NLIB"] = ["5", "25", "57"]
-// old city / society hill
-routes["OCNS"] = ["5", "25", "33", "17", "47", "48", "57"];
+var routes = new Object();
 routes["OCW"] = ["9", "12", "21", "42", "38", "44"];
-// south philly - East of Broad
-routes['SE'] = ["4", "25", "29", "47", "47M", "57", "64", "68", "79"];
-// south philly - West of Broad
-routes['SW'] = ["2", "4", "7", "17", "29", "37", "64", "68", "79"];
-// west philly
-routes['West'] = ["11", "13", "21", "30", "31", "35", "36", "38", "40", "42", "43", "46", "52", "64"];
-// ne philadelphia - Frankford to NE ...
-routes['NE'] = ["3", "18", "19", "20", "24", "25", "28", "50", "56", "58", "59", "66", "67", "70", "73", "78", "84", "88", "89"]// northeast
-// north west philly: fairmount park and manayunk
-routes['NW'] = ["9", "27", "35", "44", "61", "62", "65"];
-// south west - need to rename this
-routes['Drex'] = ["36", "37", "68"];
-// northwest: king of prussia, plymouth meeting, norristown
-routes['King'] = ["27", "90", "91", "92", "93", "94", "95", "96", "97", "98", "99"];
-
-// testing routes
-routes['103-120'] = ["103", "104", "105", "106", "107", "108", "109", "110", "111", "112", "113", "114", "115", "116", "117", "118", "119", "120"];
-routes['123-150'] = ["123", "124", "125", "126", "127", "128", "129", "130", "131", "132", "133", "139", "150"];
-routes['201-310'] = ["201", "204", "205", "206", "310"];
-routes['Letters'] = ['G', 'J', 'K', 'L', 'LUCY', 'R', 'H', 'XH'];
 var busNumbers = new Array;
 
 var busesJson = new Array();
@@ -88,6 +57,7 @@ function initialize() {
 			url : kmlUrl
 		}).setMap(map);
 	}
+	updateAllBusMarkers();
 }
 
 $(document).ready(function() {
@@ -103,24 +73,32 @@ $(document).ready(function() {
 		zone = 'OCW'
 	}
 	$('select').val(zone);
+	//busNumbers = routes[zone];
 	
-	// get zones from vars (will be looking this up remotely)
-	busNumbers = routes[zone];
-	initialize();
-	updateAllBusMarkers()
-	setInterval(function() {
+	$.when(setBusNumbers(zone)).done(function() {
+		initialize();
+		setInterval(function() {
 		updateAllBusMarkers()
-	}, 20000);
+		}, 20000);
+	});
+	
 });
 
 function getURLParameter(name) {
 	return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20')) || null;
 }
 
+function setBusNumbers(zone) {
+	//busNumbers = routes[zone];
+	return $.getJSON('/septa/zone/' + zone + '/routes', function(data) {
+		busNumbers = data;
+	});
+}
+
 function updateAllBusMarkers() {
 	var getArray = [];
 	for (var i = 0; i < busNumbers.length; i++) {
-		getArray.push(getBus(busNumbers[i]));
+		getArray.push(getRouteBuses(busNumbers[i]));
 	}
 
 	$.when.apply($, getArray).done(function() {
@@ -140,9 +118,9 @@ function formatBuses() {
 	return message;
 }
 
-function getBus(busNumber) {
-	return $.getJSON('/septa/bus/' + busNumber, function(data) {
-		busesJson[busNumber] = data;
+function getRouteBuses(routeNumber) {
+	return $.getJSON('/septa/route/locations/' + routeNumber, function(data) {
+		busesJson[routeNumber] = data;
 	});
 }
 
