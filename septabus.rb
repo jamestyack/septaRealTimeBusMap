@@ -12,11 +12,12 @@ include Mongo
 $stdout.sync = true
 
 configure do  
-  db = URI.parse(ENV['MONGOHQ_URL'])
-  conn = MongoClient.new(db.host, db.port)
-  db_name = db.path.gsub(/^\//, '')
-  set :mongo_connection, conn
-  set :mongo_db, conn.db(db_name)
+  db_details = URI.parse(ENV['MONGOHQ_URL'])
+  conn = MongoClient.new(db_details.host, db_details.port)
+  db_name = db_details.path.gsub(/^\//, '')
+  db = conn.db(db_name)
+  db.authenticate(db_details.user, db_details.password) unless (db_details.user.nil? || db_details.user.nil?)
+  set :mongo_db, db
   puts "dbconnection successful to #{ENV['MONGOHQ_URL']}"
 end
 
