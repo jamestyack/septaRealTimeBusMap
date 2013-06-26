@@ -4,11 +4,7 @@ google.maps.visualRefresh = true;
 var map;
 var mapCenter = new google.maps.LatLng(39.951328, -75.168053);
 var kmlLoc = "http://stormy-falls-9246.herokuapp.com/kml/";
-
-var routes = new Object();
-routes["OCW"] = ["9", "12", "21", "42", "38", "44"];
-var busNumbers = new Array;
-
+var busNumbers = new Array();
 var busesJson = new Array();
 var MY_MAPTYPE_ID = 'philly_style';
 var busMarkers = [];
@@ -46,6 +42,27 @@ var styledMapOptions = {
 	};
 var explorerMapType = new google.maps.StyledMapType(featureOpts, styledMapOptions);
 
+$(document).ready(function() {
+	// add zone change event to dropdown
+	$("select").change(function() {
+		window.location.replace("/bustracker?zone=" + $(this).val());
+	});
+	// get zone from querystring
+	var zone = getURLParameter("zone");
+	if (zone == null) {
+		zone = 'OCW'
+	}
+	$('select').val(zone);
+	//busNumbers = routes[zone];
+	$.when(setBusNumbers(zone)).done(function() {
+		initialize();
+		setInterval(function() {
+		updateAllBusMarkers()
+		}, 20000);
+	});
+	
+});
+
 function initialize() {
 	map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 	map.mapTypes.set(MY_MAPTYPE_ID, explorerMapType);
@@ -59,30 +76,6 @@ function initialize() {
 	}
 	updateAllBusMarkers();
 }
-
-$(document).ready(function() {
-
-	// add zone change event to dropdown
-	$("select").change(function() {
-		window.location.replace("/philly_bus_explorer.html?zone=" + $(this).val());
-	});
-	
-	// get zone from querystring
-	var zone = getURLParameter("zone");
-	if (zone == null) {
-		zone = 'OCW'
-	}
-	$('select').val(zone);
-	//busNumbers = routes[zone];
-	
-	$.when(setBusNumbers(zone)).done(function() {
-		initialize();
-		setInterval(function() {
-		updateAllBusMarkers()
-		}, 20000);
-	});
-	
-});
 
 function getURLParameter(name) {
 	return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20')) || null;
@@ -108,6 +101,12 @@ function updateAllBusMarkers() {
 	});
 }
 
+function getRouteBuses(routeNumber) {
+	return $.getJSON('/septa/route/locations/' + routeNumber, function(data) {
+		busesJson[routeNumber] = data;
+	});
+}
+
 function formatBuses() {
 	var message = "Route\tBuses\n";
 	for (var i = 0; i < busNumbers.length; i++) {
@@ -116,12 +115,6 @@ function formatBuses() {
 		message = message + busNumber + ":\t\t" + totalBuses + "\n";
 	}
 	return message;
-}
-
-function getRouteBuses(routeNumber) {
-	return $.getJSON('/septa/route/locations/' + routeNumber, function(data) {
-		busesJson[routeNumber] = data;
-	});
 }
 
 function setMarkers(busNumber) {

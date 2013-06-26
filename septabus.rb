@@ -26,15 +26,24 @@ get '/septa/route/locations/:id' do
 end
 
 get '/septa/zone/:zone/routes' do
+  content_type :json
   zonesCol = settings.mongo_db['Zones']
   result = zonesCol.find_one({:_id => params[:zone]})
+  return "{'_id':'#{params[:zone]}', 'buses':[]}" if result.nil?
   puts "thanks mongo for telling us that zone #{params[:zone]} haz routes #{result["buses"]}"
-  content_type :json
-  result["buses"].to_json
+  return result["buses"].to_json
 end
 
 get '/' do
 	redirect '/index.html'
+end
+
+get '/bustracker' do
+  zonesCol = settings.mongo_db['Zones']
+  zones = zonesCol.find(nil,{:fields => {"_id" => 1, "name" => 1}}).to_a
+  foo = "james"
+  puts(zones);
+  erb :bus_tracker, :locals => {:foo => foo, :zones => zones}
 end
 
 
