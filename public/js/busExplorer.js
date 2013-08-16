@@ -3,7 +3,7 @@ google.maps.visualRefresh = true;
 
 var map;
 var mapCenter = new google.maps.LatLng(39.951328, -75.168053);
-var kmlLoc = "http://stormy-falls-9246.herokuapp.com/kml/";
+var kmlLoc = "http://tyack.herokuapp.com/kml/";
 var busNumbers = new Array();
 var busesJson = new Array();
 var MY_MAPTYPE_ID = 'philly_style';
@@ -45,7 +45,7 @@ var explorerMapType = new google.maps.StyledMapType(featureOpts, styledMapOption
 $(document).ready(function() {
 	// add zone change event to dropdown
 	$("select").change(function() {
-		window.location.replace("/bustracker?zone=" + $(this).val());
+		window.location.replace("/phillybusexplorer?zone=" + $(this).val());
 	});
 	// get zone from querystring
 	var zone = getURLParameter("zone");
@@ -58,9 +58,8 @@ $(document).ready(function() {
 		initialize();
 		setInterval(function() {
 		updateAllBusMarkers()
-		}, 20000);
+		}, 10000);
 	});
-	
 });
 
 function initialize() {

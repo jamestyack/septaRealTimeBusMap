@@ -35,15 +35,14 @@ get '/septa/zone/:zone/routes' do
 end
 
 get '/' do
-	redirect '/index.html'
+	redirect '/phillybusexplorer'
 end
 
-get '/bustracker' do
+get '/phillybusexplorer' do
   zonesCol = settings.mongo_db['Zones']
   zones = zonesCol.find(nil,{:fields => {"_id" => 1, "name" => 1}}).to_a
-  foo = "james"
   puts(zones);
-  erb :bus_tracker, :locals => {:foo => foo, :zones => zones}
+  erb :philly_bus_explorer, :locals => {:zones => zones}
 end
 
 
