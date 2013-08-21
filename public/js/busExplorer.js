@@ -2,6 +2,7 @@
 google.maps.visualRefresh = true;
 
 var map;
+var totalBusesFromJson;
 var mapCenter = new google.maps.LatLng(39.951328, -75.168053);
 var kmlLoc = "http://tyack.herokuapp.com/kml/";
 var busNumbers = new Array();
@@ -57,13 +58,13 @@ $(document).ready(function() {
 	$.when(setBusNumbers(zone)).done(function() {
 		initialize();
 		setInterval(function() {
-		updateAllBusMarkers()
+		updateAllBusMarkers(false)
 		}, 10000);
 	});
 });
 
 function initialize() {
-	map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+	map = new google.maps.Map(document.getElementById('mapcontainer'), mapOptions);
 	map.mapTypes.set(MY_MAPTYPE_ID, explorerMapType);
 	// add routes to map
 	for (var i = 0; i < busNumbers.length; i++) {
@@ -73,7 +74,7 @@ function initialize() {
 			url : kmlUrl
 		}).setMap(map);
 	}
-	updateAllBusMarkers();
+	updateAllBusMarkers(true);
 }
 
 function getURLParameter(name) {
@@ -87,8 +88,9 @@ function setBusNumbers(zone) {
 	});
 }
 
-function updateAllBusMarkers() {
+function updateAllBusMarkers(checkForJsonReponse) {
 	var getArray = [];
+	totalBusesFromJson = 0;
 	for (var i = 0; i < busNumbers.length; i++) {
 		getArray.push(getRouteBuses(busNumbers[i]));
 	}
@@ -97,7 +99,20 @@ function updateAllBusMarkers() {
 		for (var i = 0; i < busNumbers.length; i++) {
 			setMarkers(busNumbers[i]);
 		}
+		if (checkForJsonReponse && totalBusesFromJson == 0) {
+			alert("Problem with SEPTA API: No bus locations returned; check link at bottom of web page for SEPTA developer API link.");
+		}
 	});
+}
+
+
+function setMarkers(busNumber) {
+	for (var i = 0; i < busesJson[busNumber].bus.length; i++) {
+		totalBusesFromJson += 1;
+		var bus = busesJson[busNumber].bus[i];
+		var latLng = new google.maps.LatLng(bus.lat, bus.lng);
+		addMarker(latLng, bus, busNumber);
+	}
 }
 
 function getRouteBuses(routeNumber) {
@@ -114,14 +129,6 @@ function formatBuses() {
 		message = message + busNumber + ":\t\t" + totalBuses + "\n";
 	}
 	return message;
-}
-
-function setMarkers(busNumber) {
-	for (var i = 0; i < busesJson[busNumber].bus.length; i++) {
-		var bus = busesJson[busNumber].bus[i];
-		var latLng = new google.maps.LatLng(bus.lat, bus.lng);
-		addMarker(latLng, bus, busNumber);
-	}
 }
 
 function addMarker(latLng, bus, busNumber) {
