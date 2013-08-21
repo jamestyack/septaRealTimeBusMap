@@ -59,7 +59,7 @@ $(document).ready(function() {
 		initialize();
 		setInterval(function() {
 		updateAllBusMarkers(false)
-		}, 10000);
+		}, 30000);
 	});
 });
 
