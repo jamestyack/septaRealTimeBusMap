@@ -108,7 +108,6 @@ function initialize() {
 function addMarker(accidentNo, accident) {
 
 	var latLng = new google.maps.LatLng(accident.lat, accident.long);
-	alert(accidentNo);
 
 	accidentMarkers[accidentNo] = new MarkerWithLabel({
 		position : latLng,
