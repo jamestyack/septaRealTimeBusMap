@@ -45,5 +45,8 @@ get '/phillybusexplorer' do
   erb :philly_bus_explorer, :locals => {:zones => zones}
 end
 
+get '/nottinghamtrafficaccidents' do
+  erb :ncc_traffic_accidents
+end
 
 
