@@ -3,14 +3,19 @@
 	<head>
 		<title>Nottingham Traffic Accidents</title>
 
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<!-- Bootstrap -->
-		<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-		<link href="css/sticky-footer-navbar.css" rel="stylesheet">
+		<link href="css/bootstrap.min.css" rel="stylesheet" media="screen" />
+		<link href="css/sticky-footer-navbar.css" rel="stylesheet" />
+		<link href="css/nottingham-traffic.css" rel="stylesheet" />
 		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 		<!--[if lt IE 9]>
-		<script src="../../assets/js/html5shiv.js"></script>
-		<script src="../../assets/js/respond.min.js"></script>
+		<script src="js/html5shiv.js"></script>
+		<script src="js/respond.min.js"></script>
+		<![endif]-->
+		<link rel="stylesheet" href="css/leaflet.css" />
+		<!--[if lte IE 8]>
+		<link rel="stylesheet" href="css/leaflet.ie.css" />
 		<![endif]-->
 
 	</head>
@@ -71,7 +76,8 @@
 
 			<!-- Begin page content -->
 			<div class="container">
-				
+				<div id="map">
+				</div>
 			</div>
 		</div>
 
@@ -83,10 +89,10 @@
 			</div>
 		</div>
 
-		<!-- Bootstrap core JavaScript
-		================================================== -->
 		<!-- Placed at the end of the document so the pages load faster -->
 		<script src="js/jquery-1.10.2.min.js"></script>
 		<script src="js/bootstrap.min.js"></script>
+		<script src="js/leaflet.js"></script>
+		<script src="js/nottingham-traffic.js"></script>
 	</body>
 </html>
