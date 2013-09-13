@@ -1,1 +1,19 @@
 #map { height: 600px; }
+
+#footer {
+    background-color: #F5F5F5;
+    height: 30px;
+}
+
+body {
+    padding-top: 50px;
+}
+.main-body-content {
+    padding: 40px 15px;
+    text-align: center;
+}
+
+.spacer {
+    margin-top: 20px; /* define margin as you see fit */
+}
+

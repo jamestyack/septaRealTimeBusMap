@@ -1,1 +1,1 @@
-web: bundle exec ruby restWebService.rb -p $PORT
+web: bundle exec rackup -p $PORT

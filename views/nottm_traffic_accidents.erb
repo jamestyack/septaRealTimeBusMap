@@ -5,8 +5,8 @@
 
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<!-- Bootstrap -->
-		<link href="css/bootstrap.min.css" rel="stylesheet" media="screen" />
-		<link href="css/sticky-footer-navbar.css" rel="stylesheet" />
+		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-theme.min.css">
 		<link href="css/nottingham-traffic.css" rel="stylesheet" />
 		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 		<!--[if lt IE 9]>
@@ -20,10 +20,7 @@
 
 	</head>
 	<body>
-		<!-- Wrap all page content here -->
 		<div id="wrap">
-
-			<!-- Fixed navbar -->
 			<div class="navbar navbar-default navbar-fixed-top">
 				<div class="container">
 					<div class="navbar-header">
@@ -42,11 +39,8 @@
 							<li>
 								<a href="#about">About</a>
 							</li>
-							<li>
-								<a href="#contact">Contact</a>
-							</li>
 							<li class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+								<a data-toggle="dropdown" class="dropdown-toggle" href="#">More <b class="caret"></b></a>
 								<ul class="dropdown-menu">
 									<li>
 										<a href="#">Action</a>
@@ -76,22 +70,75 @@
 
 			<!-- Begin page content -->
 			<div class="container">
-				<div id="map">
+				<div class="row spacer">
+					<div class="col-md-3">
+						<div class="btn-group" data-toggle="buttons" id="yearRadios">
+							<label class="btn btn-primary">
+								<input type="radio" name="year" id="year2009">
+								2009 </label>
+							<label class="btn btn-primary">
+								<input type="radio" name="year" id="year2010">
+								2010 </label>
+							<label class="btn btn-primary">
+								<input type="radio" name="year" id="year2011">
+								2011 </label>
+							<label class="btn btn-primary active">
+								<input type="radio" name="year" id="year2012">
+								2012 </label>
+						</div>
+						<div class="well spacer">
+							<p>
+								Severity
+							</p>
+							<div class="radio">
+								<label>
+									<input type="checkbox" name="severityOptions" id="severitySlight" value="slight">
+									Slight </label>
+							</div>
+							<div class="radio">
+								<label>
+									<input type="checkbox" name="severityOptions" id="severitySerious" value="serious">
+									Serious </label>
+							</div>
+							<div class="radio">
+								<label>
+									<input type="checkbox" name="severityOptions" id="severityFatal" value="fatal">
+									Fatal </label>
+							</div>
+						</div>
+						<div class="btn-group" data-toggle="buttons">
+							<label class="btn btn-primary">
+								<input type="checkbox">
+								Check 1 </label>
+							<label class="btn btn-primary">
+								<input type="checkbox">
+								Check 2 </label>
+							<label class="btn btn-primary">
+								<input type="checkbox">
+								Check 3 </label>
+						</div>
+					</div>
+					<div class="col-md-9">
+						<div id="map"></div>
+					</div>
 				</div>
 			</div>
 		</div>
 
 		<div id="footer">
-			<div class="container">
+
+			<div class="container spacer">
 				<p class="text-muted credit">
 					James Tyack <a href="http://www.tyack.net" target="_blank">www.tyack.net</a> Data source <a href="http://www.opendatanottingham.org.uk/dataset.aspx?id=84" target="_blank">Open Data Nottingham Traffic Accident Casualties</a>.
 				</p>
 			</div>
+
 		</div>
 
 		<!-- Placed at the end of the document so the pages load faster -->
 		<script src="js/jquery-1.10.2.min.js"></script>
-		<script src="js/bootstrap.min.js"></script>
+		<!-- Latest compiled and minified JavaScript -->
+		<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 		<script src="js/leaflet.js"></script>
 		<script src="js/nottingham-traffic.js"></script>
 	</body>

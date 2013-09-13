@@ -12,13 +12,15 @@ include Mongo
 $stdout.sync = true
 
 configure do  
-  db_details = URI.parse(ENV['MONGOHQ_URL'])
+  url = ENV['MONGOHQ_URL']
+  puts url
+  db_details = URI.parse(url)
   conn = MongoClient.new(db_details.host, db_details.port)
   db_name = db_details.path.gsub(/^\//, '')
   db = conn.db(db_name)
   db.authenticate(db_details.user, db_details.password) unless (db_details.user.nil? || db_details.user.nil?)
   set :mongo_db, db
-  puts "dbconnection successful to #{ENV['MONGOHQ_URL']}"
+  puts "dbconnection successful to #{url}"
 end
 
 # standard redirect to the bus explorer
@@ -52,6 +54,15 @@ end
 
 # -------- Nottingham Traffic Accidents --------------
 
+# get accidents by year
+get '/nottinghamtraffic/accidents/:year' do
+  content_type :json
+  accidentCol = settings.mongo_db['Accident']
+  result = accidentCol.find({:year => params[:year].to_i})
+  return "{'year':'#{params[:year]}', 'accidents':[]}" if result.nil?
+  return result.to_a.to_json
+end
+
 # get accidents by year and severity
 get '/nottinghamtraffic/accidents/:year/:severity' do
   content_type :json
@@ -82,6 +93,11 @@ end
 # main page erb for nottingham traffic accidents
 get '/nottinghamtrafficaccidents' do
   erb :nottm_traffic_accidents
+end
+
+# for testing bootstrap layout
+get '/bootstraplayouttest' do
+  erb :bootstrap_layout_test
 end
 
 
