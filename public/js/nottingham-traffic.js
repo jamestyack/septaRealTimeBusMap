@@ -124,7 +124,7 @@ function formatAccident(accident) {
 	} else {
 		response += "No persons recorded for accident<br />";
 	}
-	response += "<br />ID: " + accident._id;
+	response += "<br />ID: " + accident._id + " lat: " + accident.lat + " lng: " + accident.lng;
 	return response;
 }
 
