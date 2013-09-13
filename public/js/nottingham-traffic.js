@@ -22,12 +22,19 @@ var map = L.map('map', {
 
 $(document).ready(function() {
 
+	$(":checkbox").attr("autocomplete", "off");
+
 	// radio buttons
 	$('input[id*=year]').change(function() {
 		// change view to this year -- at the moment I think this means repopulating the layers?
 	});
+	$('input[id*=mapViewType]').change(function() {
+		map.removeLayer(accidentLayerGroups["Slight"]);
+		map.removeLayer(accidentLayerGroups["Serious"]);
+		map.removeLayer(accidentLayerGroups["Fatal"]);
+		populateAccidentLayerGroupsAndRefreshView();
+	});
 	$('input[id*=severity]').change(function() {
-		// change view to this year based on filters
 		if (this.checked) {
 			map.addLayer(accidentLayerGroups[this.value]);
 		} else {
@@ -39,30 +46,10 @@ $(document).ready(function() {
 	addLegendWithSeverities();
 	populateAccidentLayerGroupsAndRefreshView();
 
-
 });
 
-function showAccidents() {
-	console.log("showing/hiding layers");
-	if ($("#severitySlight").attr('checked')) {
-		map.addLayer(accidentLayerGroups["Slight"]);
-	} else {
-		map.removeLayer(accidentLayerGroups["Slight"]);
-	}
-	if ($("#severitySerious").attr('checked')) {
-		map.addLayer(accidentLayerGroups["Serious"]);
-	} else {
-		map.removeLayer(accidentLayerGroups["Serious"]);
-	}
-	if ($("#severityFatal").attr('checked')) {
-		map.addLayer(accidentLayerGroups["Fatal"]);
-	} else {
-		map.removeLayer(accidentLayerGroups["Fatal"]);
-	}
-}
-
-
 function populateAccidentLayerGroupsAndRefreshView() {
+
 	var year = getSelectedYear();
 	return $.getJSON('/nottinghamtraffic/accidents/' + year, function(data) {
 		// get selected mapViewType
@@ -71,7 +58,7 @@ function populateAccidentLayerGroupsAndRefreshView() {
 		accidents["Slight"] = [];
 		accidents["Serious"] = [];
 		accidents["Fatal"] = [];
-		
+
 		if (mapViewType == "OverallSeverity") {
 			for ( i = 0; i < data.length; i++) {
 				// go through each accident
@@ -87,7 +74,21 @@ function populateAccidentLayerGroupsAndRefreshView() {
 				accidents[accident.severity].push(circle);
 			}
 		} else if (mapViewType == "Pedestrian") {
-			// do pedestrian stuff
+			for ( i = 0; i < data.length; i++) {
+				// go through each accident
+				var accident = data[i];
+				if (accident.hasOwnProperty("pedestrianSeverity")) {
+					circle = L.circle([accident.lat, accident.lng], accidentCircleSize[accident.severity], {
+						color : accidentColors[accident.severity]
+					})
+					circle.bindPopup(formatAccident(accident));
+					circle.on('click', function(e) {
+						var latlng = e.latlng;
+						map.panTo(latlng);
+					});
+					accidents[accident.severity].push(circle);
+				}
+			}
 		} else if (mapViewType == "VehiclesInvolved") {
 			// do veh VehiclesInvolved stuff
 		} else if (mapViewType == "TimeOfDay") {
@@ -106,7 +107,29 @@ function populateAccidentLayerGroupsAndRefreshView() {
 		console.log("layers populated");
 		showAccidents();
 	});
+}
 
+function showAccidents() {
+	
+	var checkValues = [];
+    $('input[name=severityOptions]:checked').each(function() {
+      checkValues.push($(this).val());
+    });
+	if ($.inArray("Slight", checkValues) > -1) {
+		map.addLayer(accidentLayerGroups["Slight"]);
+	} else {
+		map.removeLayer(accidentLayerGroups["Slight"]);
+	}
+	if ($.inArray("Serious", checkValues) > -1) {
+		map.addLayer(accidentLayerGroups["Serious"]);
+	} else {
+		map.removeLayer(accidentLayerGroups["Serious"]);
+	}
+	if ($.inArray("Fatal", checkValues) > -1) {
+		map.addLayer(accidentLayerGroups["Fatal"]);
+	} else {
+		map.removeLayer(accidentLayerGroups["Fatal"]);
+	}
 }
 
 function getSelectedYear() {
@@ -172,7 +195,7 @@ function addInfoBox() {
 		return this._div;
 	};
 	info.update = function(props) {
-		this._div.innerHTML = '<h4>All accidents by severity</h4>' + 'click accidents for details';
+		this._div.innerHTML = '<h4>Accidents by severity</h4>' + 'click accidents for details';
 	};
 	info.addTo(map);
 }
