@@ -2,6 +2,7 @@ var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/98021b22951d40df90bd5592641a4f
 var cloudmadeAttribution = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>';
 var accidentColors = {};
 var accidentCircleSize = {};
+var accidentLayerGroups = {};
 accidentColors['Slight'] = "#FFCC00";
 accidentColors['Serious'] = "#FF6699";
 accidentColors['Fatal'] = "#FF0000";
@@ -9,26 +10,9 @@ accidentCircleSize['Slight'] = 10;
 accidentCircleSize['Serious'] = 50;
 accidentCircleSize['Fatal'] = 80;
 
-function getColor(d) {
-    return d > 1000 ? '#800026' :
-           d > 500  ? '#BD0026' :
-           d > 200  ? '#E31A1C' :
-           d > 100  ? '#FC4E2A' :
-           d > 50   ? '#FD8D3C' :
-           d > 20   ? '#FEB24C' :
-           d > 10   ? '#FED976' :
-                      '#FFEDA0';
-}
-
-
-
 var cloudmadeLayer = L.tileLayer(cloudmadeUrl, {
 	attribution : cloudmadeAttribution
 });
-
-// accident layer groups
-
-var accidentLayerGroups = {};
 
 var map = L.map('map', {
 	center : new L.LatLng(53.05661413, -1.05427853),
@@ -50,57 +34,84 @@ $(document).ready(function() {
 			map.removeLayer(accidentLayerGroups[this.value]);
 		}
 	});
-	populateAccidentLayerGroups();
-	
-	var legend = L.control({position: 'bottomright'});
 
-	legend.onAdd = function (map) {
+	addInfoBox();
+	addLegendWithSeverities();
+	populateAccidentLayerGroupsAndRefreshView();
 
-    var div = L.DomUtil.create('div', 'info legend'),
-        severities = ["Slight", "Serious", "Fatal"],
-        labels = [];
-
-    // loop through our density intervals and generate a label with a colored square for each interval
-    for (var i = 0; i < severities.length; i++) {
-        div.innerHTML +=
-            '<i style="background:' + accidentColors[severities[i]] + '"></i> ' +
-            severities[i] + '<br>';
-    }
-
-    return div;
-};
-
-legend.addTo(map);
 
 });
 
-function populateAccidentLayerGroups() {
+function showAccidents() {
+	console.log("showing/hiding layers");
+	if ($("#severitySlight").attr('checked')) {
+		map.addLayer(accidentLayerGroups["Slight"]);
+	} else {
+		map.removeLayer(accidentLayerGroups["Slight"]);
+	}
+	if ($("#severitySerious").attr('checked')) {
+		map.addLayer(accidentLayerGroups["Serious"]);
+	} else {
+		map.removeLayer(accidentLayerGroups["Serious"]);
+	}
+	if ($("#severityFatal").attr('checked')) {
+		map.addLayer(accidentLayerGroups["Fatal"]);
+	} else {
+		map.removeLayer(accidentLayerGroups["Fatal"]);
+	}
+}
+
+
+function populateAccidentLayerGroupsAndRefreshView() {
 	var year = getSelectedYear();
-	var accidents = {};
-	accidents["Slight"] = [];
-	accidents["Serious"] = [];
-	accidents["Fatal"] = [];
-	$.getJSON('/nottinghamtraffic/accidents/' + year, function(data) {
-		for (i=0; i<data.length; i++) {
-			// go through each accident
-			var accident = data[i];
-			circle = L.circle([accident.lat, accident.lng], accidentCircleSize[accident.severity], {
-				color : accidentColors[accident.severity]
-				
-			})
-			circle.bindPopup(formatAccident(accident));
-			accidents[accident.severity].push(circle);
+	return $.getJSON('/nottinghamtraffic/accidents/' + year, function(data) {
+		// get selected mapViewType
+		var mapViewType = $("input:radio[name ='mapViewType']:checked").val();
+		var accidents = {};
+		accidents["Slight"] = [];
+		accidents["Serious"] = [];
+		accidents["Fatal"] = [];
+		
+		if (mapViewType == "OverallSeverity") {
+			for ( i = 0; i < data.length; i++) {
+				// go through each accident
+				var accident = data[i];
+				circle = L.circle([accident.lat, accident.lng], accidentCircleSize[accident.severity], {
+					color : accidentColors[accident.severity]
+				})
+				circle.bindPopup(formatAccident(accident));
+				circle.on('click', function(e) {
+					var latlng = e.latlng;
+					map.panTo(latlng);
+				});
+				accidents[accident.severity].push(circle);
+			}
+		} else if (mapViewType == "Pedestrian") {
+			// do pedestrian stuff
+		} else if (mapViewType == "VehiclesInvolved") {
+			// do veh VehiclesInvolved stuff
+		} else if (mapViewType == "TimeOfDay") {
+			// do TimeOfDay stuff
+		} else if (mapViewType == "DriverAge") {
+			// do DriverAge stuff
+		} else if (mapViewType == "DriverSex") {
+			// do DriverSex stuff
+		} else {
+			console.error("Map view type " + mapViewType + " not recognised");
 		}
+
 		accidentLayerGroups['Slight'] = L.layerGroup(accidents['Slight']);
 		accidentLayerGroups['Serious'] = L.layerGroup(accidents['Serious']);
 		accidentLayerGroups['Fatal'] = L.layerGroup(accidents['Fatal']);
+		console.log("layers populated");
+		showAccidents();
 	});
-	
+
 }
 
 function getSelectedYear() {
 	// need to get the selected radio button
-	return 2012;	
+	return 2012;
 }
 
 function formatAccident(accident) {
@@ -130,9 +141,9 @@ function formatAccident(accident) {
 
 function formatPassengerAndPedestrianDetails(persons) {
 	var response = "<ul>";
-	for (var i=0; i<persons.length; i++) {
+	for (var i = 0; i < persons.length; i++) {
 		person = persons[i];
-		response += "<li>" + formatPersonType(person.type.toLowerCase()) + ": "+ person.sex + " age " + person.age + ", " + person.severity.toLowerCase() + " injuries.</li>"; 
+		response += "<li>" + formatPersonType(person.type.toLowerCase()) + ": " + person.sex + " age " + (person.age != "-1" ? person.age : "unknown") + ", " + person.severity.toLowerCase() + " injuries.</li>";
 	}
 	response += "</ul>"
 	return response;
@@ -150,3 +161,33 @@ function formatPersonType(personType) {
 	}
 }
 
+/*
+ * Based on http://leafletjs.com/examples/choropleth.html leaflet tutorial
+ */
+function addInfoBox() {
+	var info = L.control();
+	info.onAdd = function(map) {
+		this._div = L.DomUtil.create('div', 'info');
+		this.update();
+		return this._div;
+	};
+	info.update = function(props) {
+		this._div.innerHTML = '<h4>All accidents by severity</h4>' + 'click accidents for details';
+	};
+	info.addTo(map);
+}
+
+function addLegendWithSeverities() {
+	var legend = L.control({
+		position : 'bottomright'
+	});
+	legend.onAdd = function(map) {
+		var div = L.DomUtil.create('div', 'info legend'), severities = ["Slight", "Serious", "Fatal"], labels = [];
+		// loop through severities and generate a label with a colored square for each interval
+		for (var i = 0; i < severities.length; i++) {
+			div.innerHTML += '<i style="background:' + accidentColors[severities[i]] + '"></i> ' + severities[i] + '<br>';
+		}
+		return div;
+	};
+	legend.addTo(map);
+}

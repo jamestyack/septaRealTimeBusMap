@@ -29,3 +29,15 @@ body {
     opacity: 0.7;
 }
 
+.info {
+    background: none repeat scroll 0 0 rgba(255, 255, 255, 0.8);
+    border-radius: 5px 5px 5px 5px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    font: 14px/18px Arial,Helvetica,sans-serif;
+    padding: 6px 8px;
+}
+
+.info h4 {
+    margin: 0 0 5px;
+    color: #777;
+}

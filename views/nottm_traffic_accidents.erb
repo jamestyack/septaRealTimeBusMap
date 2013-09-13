@@ -31,40 +31,6 @@
 						</button>
 						<a class="navbar-brand" href="#">Nottingham Traffic Accidents</a>
 					</div>
-					<div class="collapse navbar-collapse">
-						<ul class="nav navbar-nav">
-							<li class="active">
-								<a href="#">Home</a>
-							</li>
-							<li>
-								<a href="#about">About</a>
-							</li>
-							<li class="dropdown">
-								<a data-toggle="dropdown" class="dropdown-toggle" href="#">More <b class="caret"></b></a>
-								<ul class="dropdown-menu">
-									<li>
-										<a href="#">Action</a>
-									</li>
-									<li>
-										<a href="#">Another action</a>
-									</li>
-									<li>
-										<a href="#">Something else here</a>
-									</li>
-									<li class="divider"></li>
-									<li class="dropdown-header">
-										Nav header
-									</li>
-									<li>
-										<a href="#">Separated link</a>
-									</li>
-									<li>
-										<a href="#">One more separated link</a>
-									</li>
-								</ul>
-							</li>
-						</ul>
-					</div><!--/.nav-collapse -->
 				</div>
 			</div>
 
@@ -87,8 +53,40 @@
 								2012 </label>
 						</div>
 						<div class="well spacer">
+							<div class="radio">
+								<label>
+									<input type="radio" name="mapViewType" id="severity" value="OverallSeverity" checked>
+									By severity</label>
+							</div>
+							<div class="radio">
+								<label>
+									<input type="radio" name="mapViewType" id="pedestrian" value="Pedestrian">
+									Where pedestrians suffered injuries</label>
+							</div>
+							<div class="radio">
+								<label>
+									<input type="radio" name="mapViewType" id="vehiclesInvolved" value="VehiclesInvolved">
+									By number of vehicles involved</label>
+							</div>
+							<div class="radio">
+								<label>
+									<input type="radio" name="mapViewType" id="timeOfDay" value="TimeOfDay">
+									By time of day</label>
+							</div>
+							<div class="radio">
+								<label>
+									<input type="radio" name="mapViewType" id="driverAge" value="DriverAge">
+									Driver accidents by age</label>
+							</div>
+							<div class="radio">
+								<label>
+									<input type="radio" name="mapViewType" id="driverSex" value="DriverSex">
+									Driver accidents by sex</label>
+							</div>
+						</div>
+						<div class="well spacer">
 							<p>
-								Show accidents with severity
+								Show severity
 							</p>
 							<div class="radio">
 								<label>
@@ -97,15 +95,16 @@
 							</div>
 							<div class="radio">
 								<label>
-									<input type="checkbox" name="severityOptions" id="severitySerious" value="Serious">
+									<input type="checkbox" name="severityOptions" id="severitySerious" value="Serious" checked>
 									Serious </label>
 							</div>
 							<div class="radio">
 								<label>
-									<input type="checkbox" name="severityOptions" id="severityFatal" value="Fatal">
+									<input type="checkbox" name="severityOptions" id="severityFatal" value="Fatal" checked>
 									Fatal </label>
 							</div>
 						</div>
+						
 					</div>
 					<div class="col-md-9">
 						<div id="map"></div>
