@@ -10,17 +10,16 @@ require 'uri'
 include Mongo
 
 $stdout.sync = true
+accidentFields = ["_id", "accidentDate", "driverAges", "driverSexes", "lat", "lng", "month", "numVeh", "pedestrianSeverity", "persons", "severity", "time", "timeCategory", "year"]
 
 configure do  
-  url = ENV['MONGOHQ_URL']
-  puts url
-  db_details = URI.parse(url)
+  db_details = URI.parse(ENV['MONGOHQ_URL'])
   conn = MongoClient.new(db_details.host, db_details.port)
   db_name = db_details.path.gsub(/^\//, '')
   db = conn.db(db_name)
   db.authenticate(db_details.user, db_details.password) unless (db_details.user.nil? || db_details.user.nil?)
   set :mongo_db, db
-  puts "dbconnection successful to #{url}"
+  puts "dbconnection successful to #{ENV['MONGOHQ_URL']}"
 end
 
 # standard redirect to the bus explorer
@@ -58,7 +57,7 @@ end
 get '/nottinghamtraffic/accidents/:year' do
   content_type :json
   accidentCol = settings.mongo_db['Accident']
-  result = accidentCol.find({:year => params[:year].to_i})
+  result = accidentCol.find({:year => params[:year].to_i}, :fields => accidentFields)
   return "{'year':'#{params[:year]}', 'accidents':[]}" if result.nil?
   return result.to_a.to_json
 end
@@ -67,7 +66,7 @@ end
 get '/nottinghamtraffic/accidents/:year/:severity' do
   content_type :json
   accidentCol = settings.mongo_db['Accident']
-  result = accidentCol.find({:year => params[:year].to_i, :severity => params[:severity]})
+  result = accidentCol.find({:year => params[:year].to_i, :severity => params[:severity]}, :fields => accidentFields)
   return "{'year':'#{params[:year]}', 'accidents':[]}" if result.nil?
   return result.to_a.to_json
 end
