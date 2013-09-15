@@ -14,7 +14,7 @@ body {
 }
 
 .spacer {
-    margin-top: 20px; /* define margin as you see fit */
+    margin-top: 15px; /* define margin as you see fit */
 }
 
 .legend {
@@ -40,4 +40,8 @@ body {
 .info h4 {
     margin: 0 0 5px;
     color: #777;
+}
+
+.panel-body {
+	padding: 12px;
 }

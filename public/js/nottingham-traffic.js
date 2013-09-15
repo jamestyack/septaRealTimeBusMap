@@ -10,6 +10,7 @@ var ageGroupColors = ['#BCBDDC', '#9E9AC8', '#807DBA', '#6A51A3', '#FEC44F', '#F
 var numOfVehiclesLabels = ['1', '2', '3', '4+']
 var numOfVehiclesColors = ['#FFCC00', '#FF6699', '#FF0000', '#4A1486']
 
+var isFirstView = true;
 var severities = ['Slight', 'Serious', 'Fatal']
 var accidentColors = {};
 accidentColors['Slight'] = "#FFCC00";
@@ -48,18 +49,15 @@ $(document).ready(function() {
 
 	// radio buttons
 	$('input[id*=year]').change(function() {
-		map.removeLayer(accidentLayerGroups["Slight"]);
-		map.removeLayer(accidentLayerGroups["Serious"]);
-		map.removeLayer(accidentLayerGroups["Fatal"]);
+		clearAccidentLayers();
 		populateAccidentLayerGroupsAndRefreshView(this.value);
 	});
 	$('input[id*=mapViewType]').change(function() {
-		map.removeLayer(accidentLayerGroups["Slight"]);
-		map.removeLayer(accidentLayerGroups["Serious"]);
-		map.removeLayer(accidentLayerGroups["Fatal"]);
+		clearAccidentLayers();
 		populateAccidentLayerGroupsAndRefreshView(getSelectedYear());
 	});
 	$('input[id*=severity]').change(function() {
+		isFirstView = false;
 		if (this.checked) {
 			map.addLayer(accidentLayerGroups[this.value]);
 		} else {
@@ -71,6 +69,13 @@ $(document).ready(function() {
 	populateAccidentLayerGroupsAndRefreshView(getSelectedYear());
 
 });
+
+function clearAccidentLayers() {
+	isFirstView = false;
+	map.removeLayer(accidentLayerGroups["Slight"]);
+	map.removeLayer(accidentLayerGroups["Serious"]);
+	map.removeLayer(accidentLayerGroups["Fatal"]);
+}
 
 function populateAccidentLayerGroupsAndRefreshView(year) {
 	info.update();
@@ -323,6 +328,9 @@ function addInfoBox() {
 	};
 	info.update = function(title) {
 		this._div.innerHTML = '<h4>' + ( title ? title : 'Loading data') + '</h4>';
+		if (isFirstView) {
+			this._div.innerHTML += '<ul><li>Adjust filters on left to change view</li><li>Click dots on map for accident details</li>'
+		}
 	};
 	info.addTo(map);
 }
@@ -350,7 +358,8 @@ function addLegend() {
 			}
 			legendDiv.innerHTML += "<i></i><h5>Total (" + totalAccidents + ")</h5>";
 			legendDiv.innerHTML += "<small>Severity is based<br />on most serious injury<br />sustained in accident</small>"
-		}if (type == 'pedestrian') {
+		}
+		if (type == 'pedestrian') {
 			var totalAccidents = 0;
 			legendDiv.innerHTML = "<i></i><h5>Severity</h5>";
 			for (var i = 0; i < severities.length; i++) {
