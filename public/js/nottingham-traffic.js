@@ -22,6 +22,7 @@ accidentCircleSize['Fatal'] = 50;
 var info;
 var legend;
 var legendDiv;
+var accidents;
 
 var cloudmadeLayer = L.tileLayer(cloudmadeUrl, {
 	attribution : cloudmadeAttribution
@@ -75,7 +76,7 @@ function populateAccidentLayerGroupsAndRefreshView(year) {
 	return $.getJSON('/nottinghamtraffic/accidents/' + year, function(data) {
 		// get selected mapViewType
 		var mapViewType = $("input:radio[name ='mapViewType']:checked").val();
-		var accidents = {};
+		accidents = {};
 		accidents["Slight"] = [];
 		accidents["Serious"] = [];
 		accidents["Fatal"] = [];
@@ -116,7 +117,7 @@ function populateAccidentLayerGroupsAndRefreshView(year) {
 					accidents[accident.pedestrianSeverity].push(circle);
 				}
 			}
-			info.update('Accidents involving pedestrians');
+			info.update('Accidents involving pedestrians', accidents);
 			legend.update('severity');
 		} else if (mapViewType == "TimeOfDay") {
 			for ( i = 0; i < data.length; i++) {
@@ -343,7 +344,7 @@ function addLegend() {
 		if (type == 'severity') {
 			legendDiv.innerHTML = "Accident severity<br />";
 			for (var i = 0; i < severities.length; i++) {
-				legendDiv.innerHTML += '<i style="background:' + accidentColors[severities[i]] + '"></i> ' + severities[i] + '<br>';
+				legendDiv.innerHTML += '<i style="background:' + accidentColors[severities[i]] + '"></i> ' + severities[i] + ' (' + accidents[severities[i]].length + ')<br>';
 			}
 		} else if (type == 'timeOfDay') {
 			legendDiv.innerHTML = "<i></i>Time of day<br>";
