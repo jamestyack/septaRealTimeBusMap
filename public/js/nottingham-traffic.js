@@ -73,10 +73,8 @@ $(document).ready(function() {
 });
 
 function populateAccidentLayerGroupsAndRefreshView(year) {
-	info.update('Loading accident data');
+	info.update();
 	return $.getJSON('/nottinghamtraffic/accidents/' + year, function(data) {
-		// get selected mapViewType
-		info.update('Updating Map Layers...');
 		var mapViewType = $("input:radio[name ='mapViewType']:checked").val();
 		accidents = {};
 		accidents["Slight"] = [];
@@ -324,7 +322,7 @@ function addInfoBox() {
 		return this._div;
 	};
 	info.update = function(title) {
-		this._div.innerHTML = '<h4>' + ( title ? title : 'Laading Data...') + '</h4>';
+		this._div.innerHTML = '<h4>' + ( title ? title : 'Loading accident data <img src="images/ajax-loader.gif"') + '</h4>';
 	};
 	info.addTo(map);
 }
