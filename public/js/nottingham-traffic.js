@@ -16,9 +16,9 @@ accidentColors['Slight'] = "#FFCC00";
 accidentColors['Serious'] = "#FF0000";
 accidentColors['Fatal'] = "#4A1486";
 var accidentCircleSize = {};
-accidentCircleSize['Slight'] = 10;
-accidentCircleSize['Serious'] = 30;
-accidentCircleSize['Fatal'] = 50;
+accidentCircleSize['Slight'] = 20;
+accidentCircleSize['Serious'] = 20;
+accidentCircleSize['Fatal'] = 40;
 var info;
 var legend;
 var legendDiv;
@@ -73,8 +73,10 @@ $(document).ready(function() {
 });
 
 function populateAccidentLayerGroupsAndRefreshView(year) {
+	info.update('Loading accident data');
 	return $.getJSON('/nottinghamtraffic/accidents/' + year, function(data) {
 		// get selected mapViewType
+		info.update('Updating Map Layers...');
 		var mapViewType = $("input:radio[name ='mapViewType']:checked").val();
 		accidents = {};
 		accidents["Slight"] = [];
@@ -87,7 +89,7 @@ function populateAccidentLayerGroupsAndRefreshView(year) {
 				var accident = data[i];
 				circle = L.circle([accident.lat, accident.lng], accidentCircleSize[accident.severity], {
 					color : accidentColors[accident.severity],
-					opacity : .9,
+					opacity : .6,
 					fillOpacity : .4
 				})
 				circle.bindPopup(formatAccident(accident));
@@ -97,7 +99,7 @@ function populateAccidentLayerGroupsAndRefreshView(year) {
 				});
 				accidents[accident.severity].push(circle);
 			}
-			info.update('Accidents');
+			info.update('Accidents in ' + year);
 			legend.update('severity');
 		} else if (mapViewType == "Pedestrian") {
 			for ( i = 0; i < data.length; i++) {
@@ -117,7 +119,7 @@ function populateAccidentLayerGroupsAndRefreshView(year) {
 					accidents[accident.pedestrianSeverity].push(circle);
 				}
 			}
-			info.update('Accidents involving pedestrians', accidents);
+			info.update('Accidents injuring pedestrians in ' + year, accidents);
 			legend.update('severity');
 		} else if (mapViewType == "TimeOfDay") {
 			for ( i = 0; i < data.length; i++) {
@@ -135,7 +137,7 @@ function populateAccidentLayerGroupsAndRefreshView(year) {
 				});
 				accidents[accident.severity].push(circle);
 			}
-			info.update('Accidents by time of day');
+			info.update('Accidents by time of day in ' + year);
 			legend.update('timeOfDay');
 		} else if (mapViewType == "VehiclesInvolved") {
 			for ( i = 0; i < data.length; i++) {
@@ -153,7 +155,7 @@ function populateAccidentLayerGroupsAndRefreshView(year) {
 				});
 				accidents[accident.severity].push(circle);
 			}
-			info.update('Accidents by number of vehicles involved');
+			info.update('Accidents by number of vehicles involved in ' + year);
 			legend.update('vehicles');
 		} else if (mapViewType == "DriverAge") {
 			for ( i = 0; i < data.length; i++) {
@@ -322,7 +324,7 @@ function addInfoBox() {
 		return this._div;
 	};
 	info.update = function(title) {
-		this._div.innerHTML = '<h4>' + ( title ? title : 'Traffic Accidents') + '</h4>';
+		this._div.innerHTML = '<h4>' + ( title ? title : 'Laading Data...') + '</h4>';
 	};
 	info.addTo(map);
 }
