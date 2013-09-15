@@ -118,7 +118,7 @@ function populateAccidentLayerGroupsAndRefreshView(year) {
 				}
 			}
 			info.update('Accidents injuring pedestrians in ' + year, accidents);
-			legend.update('severity');
+			legend.update('pedestrian');
 		} else if (mapViewType == "TimeOfDay") {
 			for ( i = 0; i < data.length; i++) {
 				// go through each accident
@@ -322,7 +322,7 @@ function addInfoBox() {
 		return this._div;
 	};
 	info.update = function(title) {
-		this._div.innerHTML = '<h4>' + ( title ? title : 'Loading accident data <img src="images/ajax-loader.gif"') + '</h4>';
+		this._div.innerHTML = '<h4>' + ( title ? title : 'Loading data') + '</h4>';
 	};
 	info.addTo(map);
 }
@@ -342,17 +342,30 @@ function addLegend() {
 	legend.update = function(type) {
 		var legendDiv = $("div.legend")[0];
 		if (type == 'severity') {
-			legendDiv.innerHTML = "Accident severity<br />";
+			var totalAccidents = 0;
+			legendDiv.innerHTML = "<i></i><h5>Severity</h5>";
 			for (var i = 0; i < severities.length; i++) {
 				legendDiv.innerHTML += '<i style="background:' + accidentColors[severities[i]] + '"></i> ' + severities[i] + ' (' + accidents[severities[i]].length + ')<br>';
+				totalAccidents += accidents[severities[i]].length;
 			}
+			legendDiv.innerHTML += "<i></i><h5>Total (" + totalAccidents + ")</h5>";
+			legendDiv.innerHTML += "<small>Severity is based<br />on most serious injury<br />sustained in accident</small>"
+		}if (type == 'pedestrian') {
+			var totalAccidents = 0;
+			legendDiv.innerHTML = "<i></i><h5>Severity</h5>";
+			for (var i = 0; i < severities.length; i++) {
+				legendDiv.innerHTML += '<i style="background:' + accidentColors[severities[i]] + '"></i> ' + severities[i] + ' (' + accidents[severities[i]].length + ')<br>';
+				totalAccidents += accidents[severities[i]].length;
+			}
+			legendDiv.innerHTML += "<i></i><h5>Total (" + totalAccidents + ")</h5>";
+			legendDiv.innerHTML += "<small>Severity is based<br />on most serious injury<br />sustained by a pedestrian</small>"
 		} else if (type == 'timeOfDay') {
-			legendDiv.innerHTML = "<i></i>Time of day<br>";
+			legendDiv.innerHTML = "<i></i><h5>Time of day</h5>";
 			for (var i = 0; i < timeOfDayTimes.length; i++) {
 				legendDiv.innerHTML += '<i style="background:' + timeOfDayColors[i] + '"></i> ' + timeOfDayTimes[i] + '<br>';
 			}
 		} else if (type == 'vehicles') {
-			legendDiv.innerHTML = "<i></i>Num Vehicles<br>";
+			legendDiv.innerHTML = "<i></i>Vehicles<br />";
 			for (var i = 0; i < numOfVehiclesLabels.length; i++) {
 				legendDiv.innerHTML += '<i style="background:' + numOfVehiclesColors[i] + '"></i> ' + numOfVehiclesLabels[i] + '<br>';
 			}
