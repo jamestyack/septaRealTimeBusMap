@@ -54,6 +54,15 @@ end
 # -------- Nottingham Traffic Accidents --------------
 
 # get accidents by year
+get '/nottinghamtraffic/accidents/' do
+  content_type :json
+  accidentCol = settings.mongo_db['Accident']
+  result = accidentCol.find({}, :fields => accidentFields)
+  return "{'year':'#{params[:year]}', 'accidents':[]}" if result.nil?
+  return result.to_a.to_json
+end
+
+# get accidents by year
 get '/nottinghamtraffic/accidents/:year' do
   content_type :json
   accidentCol = settings.mongo_db['Accident']

@@ -79,7 +79,7 @@ function clearAccidentLayers() {
 
 function populateAccidentLayerGroupsAndRefreshView(year) {
 	info.update();
-	return $.getJSON('/nottinghamtraffic/accidents/' + year, function(data) {
+	return $.getJSON('/nottinghamtraffic/accidents/' + (year!="ALL" ? year : "") , function(data) {
 		var mapViewType = $("input:radio[name ='mapViewType']:checked").val();
 		accidents = {};
 		accidents["Slight"] = [];
@@ -102,7 +102,7 @@ function populateAccidentLayerGroupsAndRefreshView(year) {
 				});
 				accidents[accident.severity].push(circle);
 			}
-			info.update('Accidents in ' + year);
+			info.update('Accidents ' + (year!="ALL" ? " (" + year + ")" : " (all years)"));
 			legend.update('severity');
 		} else if (mapViewType == "Pedestrian") {
 			for ( i = 0; i < data.length; i++) {
@@ -122,7 +122,7 @@ function populateAccidentLayerGroupsAndRefreshView(year) {
 					accidents[accident.pedestrianSeverity].push(circle);
 				}
 			}
-			info.update('Accidents injuring pedestrians in ' + year, accidents);
+			info.update('Accidents injuring pedestrians' + (year!="ALL" ? " (" + year + ")" : " (all years)"));
 			legend.update('pedestrian');
 		} else if (mapViewType == "TimeOfDay") {
 			for ( i = 0; i < data.length; i++) {
@@ -140,7 +140,7 @@ function populateAccidentLayerGroupsAndRefreshView(year) {
 				});
 				accidents[accident.severity].push(circle);
 			}
-			info.update('Accidents by time of day in ' + year);
+			info.update('Accidents by time of day ' + (year!="ALL" ? " (" + year + ")" : " (all years)"));
 			legend.update('timeOfDay');
 		} else if (mapViewType == "VehiclesInvolved") {
 			for ( i = 0; i < data.length; i++) {
@@ -158,7 +158,7 @@ function populateAccidentLayerGroupsAndRefreshView(year) {
 				});
 				accidents[accident.severity].push(circle);
 			}
-			info.update('Accidents by number of vehicles involved in ' + year);
+			info.update('Accidents by number of vehicles involved ' + (year!="ALL" ? " (" + year + ")" : " (all years)"));
 			legend.update('vehicles');
 		} else if (mapViewType == "DriverAge") {
 			for ( i = 0; i < data.length; i++) {
