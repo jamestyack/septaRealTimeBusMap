@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Nottingham Traffic Accidents</title>
+		<title>Nottinghamshire Traffic Accidents</title>
 
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<!-- Bootstrap -->
@@ -29,7 +29,7 @@
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 						</button>
-						<a class="navbar-brand" href="#">Nottingham Traffic Accidents</a>
+						<a class="navbar-brand" href="#">Nottinghamshire Traffic Accidents</a>
 					</div>
 				</div>
 			</div>
@@ -39,72 +39,82 @@
 				<div class="row spacer">
 					<div class="col-md-3">
 						<div class="btn-group" data-toggle="buttons" id="yearRadios">
-							<!--<label class="btn btn-primary">
-								<input type="radio" name="year" id="year2009">
+							<label class="btn btn-default btn-sm">
+								<input type="radio" name="year" id="year2009" value="2009">
 								2009 </label>
-							<label class="btn btn-primary">
-								<input type="radio" name="year" id="year2010">
+							<label class="btn btn-default btn-sm">
+								<input type="radio" name="year" id="year2010" value="2010">
 								2010 </label>
-							<label class="btn btn-primary">
-								<input type="radio" name="year" id="year2011">
-								2011 </label>-->
-							<label class="btn btn-primary active">
-								<input type="radio" name="year" id="year2012">
+							<label class="btn btn-default btn-sm">
+								<input type="radio" name="year" id="year2011" value="2011">
+								2011 </label>
+							<label class="btn btn-default btn-sm active">
+								<input type="radio" name="year" id="year2012" value="2012">
 								2012 </label>
 						</div>
-						<div class="well spacer">
-							<div class="radio">
-								<label>
-									<input type="radio" name="mapViewType" id="mapViewTypeseverity" value="OverallSeverity">
-									Accidents by severity</label>
+						<div class="panel panel-default spacer">
+							<div class="panel-heading">
+								View traffic accidents
 							</div>
-							<div class="radio">
-								<label>
-									<input type="radio" name="mapViewType" id="mapViewTypepedestrian" value="Pedestrian" checked>
-									Accidents where pedestrians suffered injuries</label>
-							</div>
-							<div class="radio">
-								<label>
-									<input type="radio" name="mapViewType" id="mapViewTypevehiclesInvolved" value="VehiclesInvolved">
-									By number of vehicles involved</label>
-							</div>
-							<div class="radio">
-								<label>
-									<input type="radio" name="mapViewType" id="mapViewTypetimeOfDay" value="TimeOfDay">
-									By time of day</label>
-							</div>
-							<div class="radio">
-								<label>
-									<input type="radio" name="mapViewType" id="mapViewTypedriverAge" value="DriverAge">
-									Driver accidents by age</label>
-							</div>
-							<div class="radio">
-								<label>
-									<input type="radio" name="mapViewType" id="mapViewTypedriverSex" value="DriverSex">
-									Driver accidents by sex</label>
+							<div class="panel-body">
+								<div class="radio">
+									<label>
+										<input type="radio" name="mapViewType" id="mapViewTypeseverity" value="OverallSeverity" checked>
+										By severity</label>
+								</div>
+								<div class="radio">
+									<label>
+										<input type="radio" name="mapViewType" id="mapViewTypepedestrian" value="Pedestrian">
+										Pedestrian(s) injured</label>
+								</div>
+								<div class="radio">
+									<label>
+										<input type="radio" name="mapViewType" id="mapViewTypetimeOfDay" value="TimeOfDay">
+										By time of day</label>
+								</div>
+								<div class="radio">
+									<label>
+										<input type="radio" name="mapViewType" id="mapViewTypevehiclesInvolved" value="VehiclesInvolved">
+										By number of vehicles involved</label>
+								</div>
 							</div>
 						</div>
-						<div class="well spacer">
-							<p>
-								Include accidents with severity
-							</p>
-							<div class="radio">
-								<label>
-									<input type="checkbox" name="severityOptions" id="severitySlight" value="Slight">
-									Slight </label>
+						<div class="panel panel-default spacer">
+							<div class="panel-heading">
+								Filter by severity
 							</div>
-							<div class="radio">
-								<label>
-									<input type="checkbox" name="severityOptions" id="severitySerious" value="Serious" checked>
-									Serious </label>
-							</div>
-							<div class="radio">
-								<label>
-									<input type="checkbox" name="severityOptions" id="severityFatal" value="Fatal" checked>
-									Fatal </label>
+							<div class="panel-body">
+								<div class="radio">
+									<label>
+										<input type="checkbox" name="severityOptions" id="severitySlight" value="Slight" checked>
+										Slight</label>
+								</div>
+								<div class="radio">
+									<label>
+										<input type="checkbox" name="severityOptions" id="severitySerious" value="Serious" checked>
+										Serious</label>
+								</div>
+								<div class="radio">
+									<label>
+										<input type="checkbox" name="severityOptions" id="severityFatal" value="Fatal" checked>
+										Fatal</label>
+								</div>
 							</div>
 						</div>
-						
+
+						<div class="panel panel-default spacer">
+							<div class="panel-heading">
+								Zoom to
+							</div>
+							<div class="panel-body">
+								<button type="button" id="btnShowCity" class="btn btn-default btn-sm">
+									Nottingham City
+								</button>
+								<button type="button" id="btnShowCounty" class="btn btn-default btn-sm">
+									County
+								</button>
+							</div>
+						</div>
 					</div>
 					<div class="col-md-9">
 						<div id="map"></div>
