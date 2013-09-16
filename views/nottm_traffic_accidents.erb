@@ -166,6 +166,9 @@
 						<div id="map"></div>
 					</div>
 				</div>
+				<div class="well">
+					Please leave comments, suggestions and feedback below. Visualisation designed and developed by <a href="http://www.tyack.net">James Tyack</a> using data from Open Data Nottingham.  The source can be found at <a href="http://www.opendatanottingham.org.uk/dataset.aspx?id=84" target="_blank">Open Data Nottingham Traffic Accident Casualties</a>; please follow the link for details about the data set and how to download it, along with lots of other open data. Uninjured persons are not included in the data set and grid references are not always exact.
+				</div>
 				<div id="disqus_thread"></div>
 				<script type="text/javascript">
 					/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
@@ -187,22 +190,25 @@
 				<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 			</div>
 		</div>
-
-		<div id="footer">
-
-			<div class="container spacer">
-				<p class="text-muted credit">
-					James Tyack <a href="http://www.tyack.net" target="_blank">www.tyack.net</a> Data source <a href="http://www.opendatanottingham.org.uk/dataset.aspx?id=84" target="_blank">Open Data Nottingham Traffic Accident Casualties</a>.
-				</p>
-			</div>
-
-		</div>
-
 		<!-- Placed at the end of the document so the pages load faster -->
 		<script src="js/jquery-1.10.2.min.js"></script>
 		<!-- Latest compiled and minified JavaScript -->
 		<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 		<script src="js/leaflet.js"></script>
 		<script src="js/nottingham-traffic.js"></script>
+		<script type="text/javascript">
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-32865952-2']);
+			_gaq.push(['_trackPageview']);
+
+			(function() {
+				var ga = document.createElement('script');
+				ga.type = 'text/javascript';
+				ga.async = true;
+				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+				var s = document.getElementsByTagName('script')[0];
+				s.parentNode.insertBefore(ga, s);
+			})();
+		</script>
 	</body>
 </html>
