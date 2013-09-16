@@ -24,14 +24,20 @@ var info;
 var legend;
 var legendDiv;
 var accidents;
+var mapPosition = {};
+mapPosition["City"] = {"coords":[52.95282279, -1.15092720],"zoom":13};
+mapPosition["County"] = {"coords":[53.05661413, -1.05427853],"zoom":9};
+mapPosition["Mansfield"] = {"coords":[53.14307504, -1.19648729],"zoom":12};
+mapPosition["Newark"] = {"coords":[53.07807833, -0.81134702],"zoom":12};
+mapPosition["Worksop"]= {"coords":[53.32064043, -1.02791604],"zoom":12};
 
 var cloudmadeLayer = L.tileLayer(cloudmadeUrl, {
 	attribution : cloudmadeAttribution
 });
 
 var map = L.map('map', {
-	center : new L.LatLng(53.05661413, -1.05427853),
-	zoom : 10,
+	center : mapPosition["County"].coords,
+	zoom : mapPosition["County"].zoom,
 	layers : [cloudmadeLayer]
 });
 
@@ -39,12 +45,8 @@ $(document).ready(function() {
 
 	$(":checkbox").attr("autocomplete", "off");
 
-	$('button[id=btnShowCity]').click(function() {
-		map.setView([52.95282279, -1.15092720], 13);
-	});
-
-	$('button[id=btnShowCounty]').click(function() {
-		map.setView([53.05661413, -1.05427853], 10);
+	$('button[id*=btnShow]').click(function() {
+		map.setView(mapPosition[this.value].coords, mapPosition[this.value].zoom);
 	});
 
 	// radio buttons

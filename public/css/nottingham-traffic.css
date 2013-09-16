@@ -14,7 +14,11 @@ body {
 }
 
 .spacer {
-    margin-top: 15px; /* define margin as you see fit */
+    margin-top: 15px;
+}
+
+.spacer-small {
+    margin-top: 5px;
 }
 
 .legend {
