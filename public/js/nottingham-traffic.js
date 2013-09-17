@@ -101,7 +101,7 @@ function clearAccidentLayers() {
 function populateAccidentLayerGroupsAndRefreshView(year) {
 	info.update();
 	if (accidentData[year]) {
-		addLayersAndShow(accidentData[year]);
+		addLayersAndShow(accidentData[year], year);
 	} else {
 		$.getJSON('/nottinghamtraffic/accidents/' + (year != "ALL" ? year : ""), function(data) {
 			accidentData[year] = data;
