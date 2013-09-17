@@ -17,19 +17,34 @@ accidentColors['Slight'] = "#FFCC00";
 accidentColors['Serious'] = "#FF0000";
 accidentColors['Fatal'] = "#4A1486";
 var accidentCircleSize = {};
-accidentCircleSize['Slight'] = 20;
-accidentCircleSize['Serious'] = 20;
+accidentCircleSize['Slight'] = 30;
+accidentCircleSize['Serious'] = 40;
 accidentCircleSize['Fatal'] = 40;
 var info;
 var legend;
 var legendDiv;
 var accidents;
 var mapPosition = {};
-mapPosition["City"] = {"coords":[52.95282279, -1.15092720],"zoom":13};
-mapPosition["County"] = {"coords":[53.05661413, -1.05427853],"zoom":9};
-mapPosition["Mansfield"] = {"coords":[53.14307504, -1.19648729],"zoom":12};
-mapPosition["Newark"] = {"coords":[53.07807833, -0.81134702],"zoom":12};
-mapPosition["Worksop"]= {"coords":[53.32064043, -1.02791604],"zoom":12};
+mapPosition["City"] = {
+	"coords" : [52.95282279, -1.15092720],
+	"zoom" : 13
+};
+mapPosition["County"] = {
+	"coords" : [53.05661413, -1.05427853],
+	"zoom" : 10
+};
+mapPosition["Mansfield"] = {
+	"coords" : [53.14307504, -1.19648729],
+	"zoom" : 12
+};
+mapPosition["Newark"] = {
+	"coords" : [53.07807833, -0.81134702],
+	"zoom" : 12
+};
+mapPosition["Worksop"] = {
+	"coords" : [53.32064043, -1.02791604],
+	"zoom" : 12
+};
 
 var cloudmadeLayer = L.tileLayer(cloudmadeUrl, {
 	attribution : cloudmadeAttribution
@@ -43,11 +58,8 @@ var map = L.map('map', {
 
 $(document).ready(function() {
 
+	// ensures checkboxes reset in firefox
 	$(":checkbox").attr("autocomplete", "off");
-
-	$('button[id*=btnShow]').click(function() {
-		map.setView(mapPosition[this.value].coords, mapPosition[this.value].zoom);
-	});
 
 	// radio buttons
 	$('input[id*=year]').change(function() {
@@ -66,6 +78,12 @@ $(document).ready(function() {
 			map.removeLayer(accidentLayerGroups[this.value]);
 		}
 	});
+
+	// add click events to zoom buttons
+	$('button[id*=btnShow]').click(function() {
+		map.setView(mapPosition[this.value].coords, mapPosition[this.value].zoom);
+	});
+
 	addLegend();
 	addInfoBox();
 	populateAccidentLayerGroupsAndRefreshView(getSelectedYear());
@@ -81,50 +99,57 @@ function clearAccidentLayers() {
 
 function populateAccidentLayerGroupsAndRefreshView(year) {
 	info.update();
-	return $.getJSON('/nottinghamtraffic/accidents/' + (year!="ALL" ? year : "") , function(data) {
+	return $.getJSON('/nottinghamtraffic/accidents/' + (year != "ALL" ? year : ""), function(data) {
 		var mapViewType = $("input:radio[name ='mapViewType']:checked").val();
 		accidents = {};
 		accidents["Slight"] = [];
 		accidents["Serious"] = [];
 		accidents["Fatal"] = [];
-
 		if (mapViewType == "OverallSeverity") {
 			for ( i = 0; i < data.length; i++) {
-				// go through each accident
-				var accident = data[i];
-				circle = L.circle([accident.lat, accident.lng], accidentCircleSize[accident.severity], {
-					color : accidentColors[accident.severity],
-					opacity : .6,
-					fillOpacity : .4
-				})
-				circle.bindPopup(formatAccident(accident));
-				circle.on('click', function(e) {
-					var latlng = e.latlng;
-					map.panTo(latlng);
-				});
-				accidents[accident.severity].push(circle);
+				(function() {
+					// go through each accident
+					var accident = data[i];
+					circle = L.circle([accident.lat, accident.lng], accidentCircleSize[accident.severity], {
+						color : accidentColors[accident.severity],
+						opacity : .6,
+						fillOpacity : .4
+					})
+					circle.bindPopup(formatAccident(accident) + "<div id='weather'>Fetching historical weather... </div>");
+					circle.on('click', function(e) {
+						isFirstView = false;
+						var latlng = e.latlng;
+						map.panTo(new L.LatLng(latlng.lat, latlng.lng));
+						getWeather(accident.lat, accident.lng, accident.accidentDate, accident.time);
+					});
+					accidents[accident.severity].push(circle);
+				})();
 			}
-			info.update('Accidents ' + (year!="ALL" ? " (" + year + ")" : " (all years)"));
+			info.update('Accidents ' + (year != "ALL" ? " (" + year + ")" : " (all years)"));
 			legend.update('severity');
 		} else if (mapViewType == "Pedestrian") {
 			for ( i = 0; i < data.length; i++) {
-				// go through each accident
-				var accident = data[i];
-				if (accident.hasOwnProperty("pedestrianSeverity")) {
-					circle = L.circle([accident.lat, accident.lng], accidentCircleSize[accident.severity], {
-						color : accidentColors[accident.severity],
-						opacity : .9,
-						fillOpacity : .4
-					})
-					circle.bindPopup(formatAccident(accident));
-					circle.on('click', function(e) {
-						var latlng = e.latlng;
-						map.panTo(latlng);
-					});
-					accidents[accident.pedestrianSeverity].push(circle);
-				}
+				(function() {
+					// go through each accident
+					var accident = data[i];
+					if (accident.hasOwnProperty("pedestrianSeverity")) {
+						circle = L.circle([accident.lat, accident.lng], accidentCircleSize[accident.severity], {
+							color : accidentColors[accident.severity],
+							opacity : .9,
+							fillOpacity : .4
+						})
+						circle.bindPopup(formatAccident(accident) + "<div id='weather'>Fetching historical weather... </div>");
+						circle.on('click', function(e) {
+							var latlng = e.latlng;
+							map.panTo(latlng);
+							getWeather(accident.lat, accident.lng, accident.accidentDate, accident.time);
+						});
+						accidents[accident.pedestrianSeverity].push(circle);
+					}
+				})();
+
 			}
-			info.update('Accidents injuring pedestrians' + (year!="ALL" ? " (" + year + ")" : " (all years)"));
+			info.update('Accidents injuring<br />pedestrians' + (year != "ALL" ? " (" + year + ")" : " (all years)"));
 			legend.update('pedestrian');
 		} else if (mapViewType == "TimeOfDay") {
 			for ( i = 0; i < data.length; i++) {
@@ -142,7 +167,7 @@ function populateAccidentLayerGroupsAndRefreshView(year) {
 				});
 				accidents[accident.severity].push(circle);
 			}
-			info.update('Accidents by time of day ' + (year!="ALL" ? " (" + year + ")" : " (all years)"));
+			info.update('Accidents by time of day ' + (year != "ALL" ? " (" + year + ")" : " (all years)"));
 			legend.update('timeOfDay');
 		} else if (mapViewType == "VehiclesInvolved") {
 			for ( i = 0; i < data.length; i++) {
@@ -160,32 +185,8 @@ function populateAccidentLayerGroupsAndRefreshView(year) {
 				});
 				accidents[accident.severity].push(circle);
 			}
-			info.update('Accidents by number of vehicles involved ' + (year!="ALL" ? " (" + year + ")" : " (all years)"));
+			info.update('Accidents by number of vehicles involved ' + (year != "ALL" ? " (" + year + ")" : " (all years)"));
 			legend.update('vehicles');
-		} else if (mapViewType == "DriverAge") {
-			for ( i = 0; i < data.length; i++) {
-				// go through each accident
-				var accident = data[i];
-				if (accident.hasOwnProperty("driverAges")) {
-					var youngestDriverAge = getYoungestDriverAge(accident.driverAges);
-					circle = L.circle([accident.lat, accident.lng], 20, {
-						color : getAgeGroupColor(youngestDriverAge),
-						opacity : .9,
-						fillOpacity : .4
-					})
-					circle.bindPopup(formatAccident(accident));
-					circle.on('click', function(e) {
-						var latlng = e.latlng;
-						map.panTo(latlng);
-					});
-					accidents[accident.severity].push(circle);
-				}
-			}
-			info.update('Ages of drivers having accidents');
-			legend.update('ages');
-		} else if (mapViewType == "DriverSex") {
-			info.update('Male/female drivers having accidents');
-			legend.update('sex');
 		} else {
 			console.error("Map view type " + mapViewType + " not recognised");
 		}
@@ -198,20 +199,12 @@ function populateAccidentLayerGroupsAndRefreshView(year) {
 	});
 }
 
-Array.min = function(array) {
-	return Math.min.apply(Math, array);
-};
-
-Array.max = function(array) {
-	return Math.max.apply(Math, array);
-};
-
-function getYoungestDriverAge(driverAges) {
-	return Array.min(driverAges);
-}
-
-function getOldestDriverAge(driverAges) {
-	return Array.max(driverAges);
+function getWeather(lat, lng, date, time) {
+	formattedDate = date.slice(0, 4) + date.slice(5, 7) + date.slice(8, 10);
+	uri = "/weather/" + lat + "/" + lng + "/" + formattedDate + "/" + time;
+	$.getJSON(uri, function(data) {
+		$('#weather').html("<img style='float:right;' src='http://icons.wxug.com/i/c/i/" + data.icon + ".gif' />" + data.date.pretty + "</br>Temp: " + data.tempm + "c, Conditions: " + data.conds + "<br /><br /><div style='text-align:center'><small>Weather from</small><a href='http://www.wunderground.com/?apiref=f1ee85066e2232eb'><img src='/images/wunderground.png' /></a></div>");
+	});
 }
 
 function getAgeGroupColor(driverAge) {
@@ -271,11 +264,11 @@ function getSelectedYear() {
 }
 
 function formatAccident(accident) {
-	var response = "";
+	var response = "<h5>";
 	response += accident.severity
-	response += " @ " + accident.time;
-	response += " (" + accident.timeCategory + ") on ";
-	response += accident.accidentDate.substring(8, 10) + "-" + accident.accidentDate.substring(5, 7) + "-" + accident.accidentDate.substring(2, 4) + "<br />";
+	response += " Accident at " + accident.time + " on ";
+	response += accident.accidentDate.substring(8, 10) + "-" + accident.accidentDate.substring(5, 7) + "-" + accident.accidentDate.substring(2, 4) + "</h5>";
+	response += "ID: " + accident._id + " lat: " + accident.lat + " lng: " + accident.lng + "<br />";
 	response += "Vehicles involved: " + accident.numVeh + "<br />";
 	if (accident.hasOwnProperty("pedestrianSeverity")) {
 		response += "A pedestian was involved with " + accident.pedestrianSeverity.toLowerCase() + " injuries<br />";
@@ -292,7 +285,6 @@ function formatAccident(accident) {
 	} else {
 		response += "No persons recorded for accident<br />";
 	}
-	response += "<br />ID: " + accident._id + " lat: " + accident.lat + " lng: " + accident.lng;
 	return response;
 }
 
@@ -331,7 +323,7 @@ function addInfoBox() {
 	info.update = function(title) {
 		this._div.innerHTML = '<h4>' + ( title ? title : 'Loading data') + '</h4>';
 		if (isFirstView) {
-			this._div.innerHTML += '<ul><li>Adjust filters on left to change view</li><li>Click dots on map for accident details</li>'
+			this._div.innerHTML += '<small>Click dots on map for accident details</small>'
 		}
 	};
 	info.addTo(map);

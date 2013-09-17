@@ -6,6 +6,7 @@ require 'json'
 require 'set'
 require 'mongo'
 require 'uri'
+require 'pp'
 
 include Mongo
 
@@ -106,6 +107,25 @@ end
 # for testing bootstrap layout
 get '/bootstraplayouttest' do
   erb :bootstrap_layout_test
+end
+
+# --- get from Wunderground
+# gets the first observation for the day that is equal to or greater than the passed time
+
+get '/weather/:lat/:lng/:date/:time' do
+  content_type :json
+  uri = "http://api.wunderground.com/api/c9976b65ce0c1ca8/history_#{params[:date]}/q/#{params[:lat]},#{params[:lng]}.json"
+  response = RestClient.get uri
+  jsonResp = JSON.parse(response)
+  hourOfRequest = params[:time][0..1].to_i
+  jsonResp['history']['observations'].each do | observation | 
+    hour = observation['date']['hour'].to_i
+    if hour == hourOfRequest
+      return observation.to_json;
+    end
+  end
+  # otherwise just return last value
+  return jsonResp['history']['observations'][jsonResp['history']['observations'].length - 1].to_json
 end
 
 
