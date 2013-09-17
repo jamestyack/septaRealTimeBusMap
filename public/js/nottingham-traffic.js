@@ -24,6 +24,7 @@ var info;
 var legend;
 var legendDiv;
 var accidents;
+var accidentData = {};
 var mapPosition = {};
 mapPosition["City"] = {
 	"coords" : [52.95282279, -1.15092720],
@@ -99,111 +100,124 @@ function clearAccidentLayers() {
 
 function populateAccidentLayerGroupsAndRefreshView(year) {
 	info.update();
-	return $.getJSON('/nottinghamtraffic/accidents/' + (year != "ALL" ? year : ""), function(data) {
-		var mapViewType = $("input:radio[name ='mapViewType']:checked").val();
-		accidents = {};
-		accidents["Slight"] = [];
-		accidents["Serious"] = [];
-		accidents["Fatal"] = [];
-		if (mapViewType == "OverallSeverity") {
-			for ( i = 0; i < data.length; i++) {
-				(function() {
-					// go through each accident
-					var accident = data[i];
+	if (accidentData[year]) {
+		addLayersAndShow(accidentData[year]);
+	} else {
+		$.getJSON('/nottinghamtraffic/accidents/' + (year != "ALL" ? year : ""), function(data) {
+			accidentData[year] = data;
+			addLayersAndShow(data, year);
+		});
+	}
+}
+
+function addLayersAndShow(data, year) {
+	var mapViewType = $("input:radio[name ='mapViewType']:checked").val();
+	accidents = {};
+	accidents["Slight"] = [];
+	accidents["Serious"] = [];
+	accidents["Fatal"] = [];
+	if (mapViewType == "OverallSeverity") {
+		for ( i = 0; i < data.length; i++) {
+			(function() {
+				// go through each accident
+				var accident = data[i];
+				circle = L.circle([accident.lat, accident.lng], accidentCircleSize[accident.severity], {
+					color : accidentColors[accident.severity],
+					opacity : .6,
+					fillOpacity : .4
+				})
+				circle.bindPopup(formatAccident(accident) + "<div id='weather'>Fetching historical weather... </div>");
+				circle.on('click', function(e) {
+					isFirstView = false;
+					var latlng = e.latlng;
+					map.panTo(new L.LatLng(latlng.lat, latlng.lng));
+					getWeather(accident.lat, accident.lng, accident.accidentDate, accident.time);
+				});
+				accidents[accident.severity].push(circle);
+			})();
+		}
+		info.update('Accidents ' + (year != "ALL" ? " (" + year + ")" : " (all years)"));
+		legend.update('severity');
+	} else if (mapViewType == "Pedestrian") {
+		for ( i = 0; i < data.length; i++) {
+			(function() {
+				// go through each accident
+				var accident = data[i];
+				if (accident.hasOwnProperty("pedestrianSeverity")) {
 					circle = L.circle([accident.lat, accident.lng], accidentCircleSize[accident.severity], {
 						color : accidentColors[accident.severity],
-						opacity : .6,
+						opacity : .9,
 						fillOpacity : .4
 					})
 					circle.bindPopup(formatAccident(accident) + "<div id='weather'>Fetching historical weather... </div>");
 					circle.on('click', function(e) {
-						isFirstView = false;
 						var latlng = e.latlng;
-						map.panTo(new L.LatLng(latlng.lat, latlng.lng));
+						map.panTo(latlng);
 						getWeather(accident.lat, accident.lng, accident.accidentDate, accident.time);
 					});
-					accidents[accident.severity].push(circle);
-				})();
-			}
-			info.update('Accidents ' + (year != "ALL" ? " (" + year + ")" : " (all years)"));
-			legend.update('severity');
-		} else if (mapViewType == "Pedestrian") {
-			for ( i = 0; i < data.length; i++) {
-				(function() {
-					// go through each accident
-					var accident = data[i];
-					if (accident.hasOwnProperty("pedestrianSeverity")) {
-						circle = L.circle([accident.lat, accident.lng], accidentCircleSize[accident.severity], {
-							color : accidentColors[accident.severity],
-							opacity : .9,
-							fillOpacity : .4
-						})
-						circle.bindPopup(formatAccident(accident) + "<div id='weather'>Fetching historical weather... </div>");
-						circle.on('click', function(e) {
-							var latlng = e.latlng;
-							map.panTo(latlng);
-							getWeather(accident.lat, accident.lng, accident.accidentDate, accident.time);
-						});
-						accidents[accident.pedestrianSeverity].push(circle);
-					}
-				})();
+					accidents[accident.pedestrianSeverity].push(circle);
+				}
+			})();
 
-			}
-			info.update('Accidents injuring<br />pedestrians' + (year != "ALL" ? " (" + year + ")" : " (all years)"));
-			legend.update('pedestrian');
-		} else if (mapViewType == "TimeOfDay") {
-			for ( i = 0; i < data.length; i++) {
-				// go through each accident
-				var accident = data[i];
-				circle = L.circle([accident.lat, accident.lng], 20, {
-					color : timeOfDayColors[$.inArray(accident.timeCategory, timeOfDayCats)],
-					opacity : .9,
-					fillOpacity : .4
-				})
-				circle.bindPopup(formatAccident(accident));
-				circle.on('click', function(e) {
-					var latlng = e.latlng;
-					map.panTo(latlng);
-				});
-				accidents[accident.severity].push(circle);
-			}
-			info.update('Accidents by time of day ' + (year != "ALL" ? " (" + year + ")" : " (all years)"));
-			legend.update('timeOfDay');
-		} else if (mapViewType == "VehiclesInvolved") {
-			for ( i = 0; i < data.length; i++) {
-				// go through each accident
-				var accident = data[i];
-				circle = L.circle([accident.lat, accident.lng], 20, {
-					color : getNumOfVehiclesColor(accident.numVeh),
-					opacity : .9,
-					fillOpacity : .4
-				})
-				circle.bindPopup(formatAccident(accident));
-				circle.on('click', function(e) {
-					var latlng = e.latlng;
-					map.panTo(latlng);
-				});
-				accidents[accident.severity].push(circle);
-			}
-			info.update('Accidents by number of vehicles involved ' + (year != "ALL" ? " (" + year + ")" : " (all years)"));
-			legend.update('vehicles');
-		} else {
-			console.error("Map view type " + mapViewType + " not recognised");
 		}
+		info.update('Accidents injuring<br />pedestrians' + (year != "ALL" ? " (" + year + ")" : " (all years)"));
+		legend.update('pedestrian');
+	} else if (mapViewType == "TimeOfDay") {
+		for ( i = 0; i < data.length; i++) {
+			// go through each accident
+			var accident = data[i];
+			circle = L.circle([accident.lat, accident.lng], 20, {
+				color : timeOfDayColors[$.inArray(accident.timeCategory, timeOfDayCats)],
+				opacity : .9,
+				fillOpacity : .4
+			})
+			circle.bindPopup(formatAccident(accident));
+			circle.on('click', function(e) {
+				var latlng = e.latlng;
+				map.panTo(latlng);
+			});
+			accidents[accident.severity].push(circle);
+		}
+		info.update('Accidents by time of day ' + (year != "ALL" ? " (" + year + ")" : " (all years)"));
+		legend.update('timeOfDay');
+	} else if (mapViewType == "VehiclesInvolved") {
+		for ( i = 0; i < data.length; i++) {
+			// go through each accident
+			var accident = data[i];
+			circle = L.circle([accident.lat, accident.lng], 20, {
+				color : getNumOfVehiclesColor(accident.numVeh),
+				opacity : .9,
+				fillOpacity : .4
+			})
+			circle.bindPopup(formatAccident(accident));
+			circle.on('click', function(e) {
+				var latlng = e.latlng;
+				map.panTo(latlng);
+			});
+			accidents[accident.severity].push(circle);
+		}
+		info.update('Accidents by number of vehicles involved ' + (year != "ALL" ? " (" + year + ")" : " (all years)"));
+		legend.update('vehicles');
+	} else {
+		console.error("Map view type " + mapViewType + " not recognised");
+	}
 
-		accidentLayerGroups['Slight'] = L.layerGroup(accidents['Slight']);
-		accidentLayerGroups['Serious'] = L.layerGroup(accidents['Serious']);
-		accidentLayerGroups['Fatal'] = L.layerGroup(accidents['Fatal']);
-		console.log("layers populated");
-		showAccidents();
-	});
+	accidentLayerGroups['Slight'] = L.layerGroup(accidents['Slight']);
+	accidentLayerGroups['Serious'] = L.layerGroup(accidents['Serious']);
+	accidentLayerGroups['Fatal'] = L.layerGroup(accidents['Fatal']);
+	console.log("layers populated");
+	showAccidents();
 }
 
 function getWeather(lat, lng, date, time) {
 	formattedDate = date.slice(0, 4) + date.slice(5, 7) + date.slice(8, 10);
 	uri = "/weather/" + lat + "/" + lng + "/" + formattedDate + "/" + time;
 	$.getJSON(uri, function(data) {
-		$('#weather').html("<img style='float:right;' src='http://icons.wxug.com/i/c/i/" + data.icon + ".gif' />" + data.date.pretty + "</br>Temp: " + data.tempm + "c, Conditions: " + data.conds + "<br /><br /><div style='text-align:center'><small>Weather from</small><a href='http://www.wunderground.com/?apiref=f1ee85066e2232eb'><img src='/images/wunderground.png' /></a></div>");
+		var weatherStation = data.metar.slice(6,10); // metar: "METAR EGCN 041920Z 18005KT CAVOK 18/15 Q1007"
+		$('#weather').html("<img style='float:right;' src='http://icons.wxug.com/i/c/i/" + data.icon + ".gif' />" + 
+			data.date.pretty + "</br>Temp: " + data.tempm + "c, Conditions: " + data.conds + 
+			" Weather station <a href='http://www.checkwx.com/weather/" + weatherStation + "' target='_blank'>" + 
+			weatherStation + "</a><br /><br /><div style='text-align:center'><small>Weather from</small><a href='http://www.wunderground.com/?apiref=f1ee85066e2232eb'><img src='/images/wunderground.png' /></a></div>");
 	});
 }
 
