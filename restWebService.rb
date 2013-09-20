@@ -13,6 +13,10 @@ include Mongo
 $stdout.sync = true
 accidentFields = ["_id", "accidentDate", "driverAges", "driverSexes", "lat", "lng", "month", "numVeh", "pedestrianSeverity", "persons", "severity", "time", "timeCategory", "year"]
 
+configure :production do
+  require 'newrelic_rpm'
+end
+
 configure do  
   db_details = URI.parse(ENV['MONGOHQ_URL'])
   conn = MongoClient.new(db_details.host, db_details.port)
