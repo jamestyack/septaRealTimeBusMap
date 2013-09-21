@@ -3,6 +3,7 @@ var cloudmadeAttribution = 'Map data &copy; <a href="http://openstreetmap.org">O
 var stationLayerGroups = {};
 var isFirstView = false;
 var accessTypes = ['Wheelchair', 'Escalator', 'StairsOnly'];
+var accessTypesLabels = ['Wheelchair Accessible with Elevator', 'Escalator/Stairs Only', 'Stairs Only'];
 var accessTypeColors = {};
 var stationData = {};
 accessTypeColors['Wheelchair'] = "#FFCC00";
@@ -89,14 +90,14 @@ function addLayersAndShow(stationData, line) {
 					opacity : .6,
 					fillOpacity : .4
 				})
-				circle.bindPopup(formatStation(station) + "<div id='extraStationInfo'>Fetching extra info and alerts... </div>");
+				circle.bindPopup(formatStation(station) + "<br /><div id='extraStationInfo'>Fetching extra info and alerts... </div>");
 				circle.on('click', function(e) {
 					isFirstView = false;
 					var latlng = e.latlng;
 					map.panTo(new L.LatLng(latlng.lat, latlng.lng));
 					getExtraStationInfo(station._id);
 				});
-				stations[station.wheelchair_boarding ? "Wheelchair" : "StairsOnly"].push(circle);
+				stations[getAccessType(station)].push(circle);
 			})();
 		}
 		info.update(line + ' stations');
@@ -117,8 +118,20 @@ function getExtraStationInfo(station) {
 function getAccessTypeColor(station) {
 	if (station.wheelchair_boarding == "1") {
 		return accessTypeColors['Wheelchair'];
+	} else if (station.escalator == "1") {
+		return accessTypeColors['Escalator'];
 	} else {
 		return accessTypeColors['StairsOnly'];
+	}
+}
+
+function getAccessType(station) {
+	if (station.wheelchair_boarding == "1") {
+		return 'Wheelchair';
+	} else if (station.escalator == "1") {
+		return 'Escalator';
+	} else {
+		return 'StairsOnly';
 	}
 }
 
@@ -147,6 +160,10 @@ function showStations() {
 
 function formatStation(station) {
 	var response = "<h5>" + station.stop_name + " " + getLine(station) + "</h5>";
+	response += "Station is " + (station.wheelchair_boarding ? "" : " not") + " wheelchair accessible<br />";
+	if (station.escalator == "1") {
+		response += "Escalator is provided</br>"
+	}
 	return response;
 }
 
@@ -187,7 +204,7 @@ function addLegend() {
 	legend.onAdd = function(map) {
 		legendDiv = L.DomUtil.create('div', 'info legend');
 		for (var i = 0; i < accessTypes.length; i++) {
-			legendDiv.innerHTML += '<i style="background:' + accessTypeColors[accessTypes[i]] + '"></i> ' + accessTypes[i] + '<br>';
+			legendDiv.innerHTML += '<i style="background:' + accessTypeColors[accessTypes[i]] + '"></i> ' + accessTypesLabels[i] + '<br>';
 		}
 		return legendDiv;
 	};
