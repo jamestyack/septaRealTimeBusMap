@@ -2,12 +2,12 @@ var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/98021b22951d40df90bd5592641a4f
 var cloudmadeAttribution = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>';
 var stationLayerGroups = {};
 var isFirstView = false;
-var stationTypes = ['Wheelchair', 'Escalator', 'StairsOnly'];
-var stationTypeColors = {};
-var stationData;
-stationTypeColors['Wheelchair'] = "#FFCC00";
-stationTypeColors['Escalator'] = "#FF0000";
-stationTypeColors['StairsOnly'] = "#4A1486";
+var accessTypes = ['Wheelchair', 'Escalator', 'StairsOnly'];
+var accessTypeColors = {};
+var stationData = {};
+accessTypeColors['Wheelchair'] = "#FFCC00";
+accessTypeColors['Escalator'] = "#FF0000";
+accessTypeColors['StairsOnly'] = "#4A1486";
 
 
 var mapPosition = {};
@@ -28,8 +28,19 @@ var map = L.map('map', {
 
 $(document).ready(function() {
 
+	var mfl = new L.KML("/kml/MFL.kml", {async: true});
+	var bss = new L.KML("/kml/BSS.kml", {async: true});
+	
+	//map.addLayer(mfl);
+	//map.addLayer(bss);
+
 	// ensures checkboxes reset in firefox
 	$(":checkbox").attr("autocomplete", "off");
+	
+	$('input[id*=line]').change(function() {
+		clearStationLayers();
+		populateStationLayerGroupsAndRefreshView(this.value);
+	});
 
 	$('input[id*=filter]').change(function() {
 		isFirstView = false;
@@ -42,7 +53,7 @@ $(document).ready(function() {
 
 	addLegend();
 	addInfoBox();
-	populateStationLayerGroupsAndRefreshView();
+	populateStationLayerGroupsAndRefreshView(getSelectedLine());
 
 });
 
@@ -51,55 +62,64 @@ function clearStationLayers() {
 	map.removeLayer(stationLayerGroups["Wheelchair"]);
 	map.removeLayer(stationLayerGroups["Escalator"]);
 	map.removeLayer(stationLayerGroups["StairsOnly"]);
-	map.removeLayer(stationLayerGroups["AccessibleRestrooms"]);
 }
 
-function populateStationLayerGroupsAndRefreshView() {
+function getSelectedLine() {
+	return $('.btn-group > .btn.active > input').val();
+}
+
+function populateStationLayerGroupsAndRefreshView(line) {
 	info.update();
-	if (stationData) {
-		addLayersAndShow(stationData);
-	} else {
-		// TODO add call to new api to get station info
-		//$.getJSON('/nottinghamtraffic/accidents/' + (year != "ALL" ? year : ""), function(data) {
-		//	stationData = data;
-			//addLayersAndShow(stationData);
-		//});
-	}
+	$.getJSON('/septa/stations/line/' + line, function(data) {
+		addLayersAndShow(data, line);
+	});
 }
 
-function addLayersAndShow(stationData) {
+function addLayersAndShow(stationData, line) {
 	stations = {};
-	accidents["Wheelchair"] = [];
-	accidents["Escalator"] = [];
-	accidents["StairsOnly"] = [];
-		for ( i = 0; i < data.length; i++) {
+	stations["Wheelchair"] = [];
+	stations["Escalator"] = [];
+	stations["StairsOnly"] = [];
+		for ( i = 0; i < stationData.stations.length; i++) {
 			(function() {
-				// go through each accident
-				var accident = data[i];
-				circle = L.circle([accident.lat, accident.lng], accidentCircleSize[accident.severity], {
-					color : accidentColors[accident.severity],
+				// go through each station
+				var station = stationData.stations[i];
+				circle = L.circle([station.stop_lat, station.stop_lon], 50, {
+					color : getAccessTypeColor(station),
 					opacity : .6,
 					fillOpacity : .4
 				})
-				circle.bindPopup(formatAccident(accident) + "<div id='weather'>Fetching historical weather... </div>");
+				circle.bindPopup(formatStation(station) + "<div id='extraStationInfo'>Fetching extra info and alerts... </div>");
 				circle.on('click', function(e) {
 					isFirstView = false;
 					var latlng = e.latlng;
 					map.panTo(new L.LatLng(latlng.lat, latlng.lng));
-					getWeather(accident.lat, accident.lng, accident.accidentDate, accident.time);
+					getExtraStationInfo(station._id);
 				});
-				accidents[accident.severity].push(circle);
+				stations[station.wheelchair_boarding ? "Wheelchair" : "StairsOnly"].push(circle);
 			})();
 		}
-		info.update('Accidents ' + (year != "ALL" ? " (" + year + ")" : " (all years)"));
+		info.update(line + ' stations');
 		legend.update('severity');
 	
 
-	stationLayerGroups['Slight'] = L.layerGroup(accidents['Slight']);
-	stationLayerGroups['Serious'] = L.layerGroup(accidents['Serious']);
-	stationLayerGroups['Fatal'] = L.layerGroup(accidents['Fatal']);
+	stationLayerGroups['Wheelchair'] = L.layerGroup(stations['Wheelchair']);
+	stationLayerGroups['Escalator'] = L.layerGroup(stations['Escalator']);
+	stationLayerGroups['StairsOnly'] = L.layerGroup(stations['StairsOnly']);
 	console.log("layers populated");
-	showAccidents();
+	showStations();
+}
+
+function getExtraStationInfo(station) {
+	// TODO ajax stuff here to call for extra station/alert info
+}
+
+function getAccessTypeColor(station) {
+	if (station.wheelchair_boarding == "1") {
+		return accessTypeColors['Wheelchair'];
+	} else {
+		return accessTypeColors['StairsOnly'];
+	}
 }
 
 
@@ -126,8 +146,19 @@ function showStations() {
 }
 
 function formatStation(station) {
-	var response = "<h5>station info here</h5>";
+	var response = "<h5>" + station.stop_name + " " + getLine(station) + "</h5>";
 	return response;
+}
+
+function getLine(station) {
+	var response = "(";
+	if (station.MFL == 1) {
+		response += "MFL";
+	}
+	if (station.BSS == 1) {
+		response += (response=="(" ? "" : "/") + "BSS";
+	}
+	return response + ")";
 }
 
 /*
@@ -155,8 +186,8 @@ function addLegend() {
 	});
 	legend.onAdd = function(map) {
 		legendDiv = L.DomUtil.create('div', 'info legend');
-		for (var i = 0; i < stationTypes.length; i++) {
-			legendDiv.innerHTML += '<i style="background:' + stationTypeColors[stationTypes[i]] + '"></i> ' + stationTypes[i] + '<br>';
+		for (var i = 0; i < accessTypes.length; i++) {
+			legendDiv.innerHTML += '<i style="background:' + accessTypeColors[accessTypes[i]] + '"></i> ' + accessTypes[i] + '<br>';
 		}
 		return legendDiv;
 	};

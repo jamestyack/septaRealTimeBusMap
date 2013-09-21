@@ -86,4 +86,3 @@ db.Zones.remove({});
 for (var i=0; i<zones.length; i++) {
 	db.Zones.insert(zones[i]);
 }
-

@@ -137,4 +137,16 @@ get '/weather/:lat/:lng/:date/:time' do
   return jsonResp['history']['observations'][jsonResp['history']['observations'].length - 1].to_json
 end
 
+get '/septa/stations/line/:line' do
+  content_type :json
+  stationsCol = settings.mongo_db['septa_stations']
+  result = stationsCol.find({params[:line] => "1"})
+  
+  doc = {}
+  doc["line"] = "#{params[:line]}"
+  doc["stations"]=result.to_a
+  
+  return doc.to_json
+end
+
 
