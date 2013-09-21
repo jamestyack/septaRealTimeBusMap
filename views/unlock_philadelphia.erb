@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Unlock Philadelphia</title>
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<!-- Bootstrap -->
+		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-theme.min.css">
+		<link href="css/unlock-philadelphia.css" rel="stylesheet" />
+		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+		<!--[if lt IE 9]>
+		<script src="js/html5shiv.js"></script>
+		<script src="js/respond.min.js"></script>
+		<![endif]-->
+		<link rel="stylesheet" href="css/leaflet.css" />
+		<!--[if lte IE 8]>
+		<link rel="stylesheet" href="css/leaflet.ie.css" />
+		<![endif]-->
+
+	</head>
+	<body>
+		<div id="wrap">
+			<div class="navbar navbar-default navbar-fixed-top">
+				<div class="container">
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+						<a class="navbar-brand" href="">Unlock Philadelphia</a>
+					</div>
+					<ul class="nav navbar-nav">
+						<!--<li class="active">
+						<a href="http://www.tyack.net">Blog</a>
+						</li>-->
+						<li>
+							<a href="">Home</a>
+						</li>
+						<!--<li>
+						<a href="#contact">Contact</a>
+						</li>-->
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Other Open Data Apps<b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li>
+									<a href="/phillybusexplorer">Philly Bus Explorer</a>
+								</li>
+								<!--<li>
+								<a href="#">Something else here</a>
+								</li>
+								<li class="divider"></li>
+								<li class="dropdown-header">
+								Nav header
+								</li>
+								<li>
+								<a href="#">Separated link</a>
+								</li>
+								<li>
+								<a href="#">One more separated link</a>
+								</li>-->
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+			<!-- Begin page content -->
+			<div class="container">
+				<div class="row spacer">
+					<div class="col-md-3">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								Filter stations
+							</div>
+							<div class="panel-body">
+								<div class="radio">
+									<label>
+										<input type="checkbox" name="filterOptions" id="filterWheelchair" value="Wheelchair" checked>
+										Wheelchair accessible</label>
+								</div>
+								<div class="radio">
+									<label>
+										<input type="checkbox" name="filterOptions" id="filterEscalator" value="Escalator" checked>
+										Escalators</label>
+								</div>
+								<div class="radio">
+									<label>
+										<input type="checkbox" name="filterOptions" id="filterStairsOnly" value="StairsOnly" checked>
+										Stairs Only</label>
+								</div>
+								<div class="radio">
+									<label>
+										<input type="checkbox" name="filterOptions" id="filterToilets" value="AccessibleRestrooms" checked>
+										Accessible restrooms</label>
+								</div>
+							</div>
+						</div>
+
+					</div>
+					<div class="col-md-9">
+						<div id="map"></div>
+					</div>
+				</div>
+				<div class="well spacer">
+					Please leave comments, suggestions and feedback below. Visualisation designed and developed by Transit Apps for Philly Hackathon using data from various <a href="http://www.septa.com">SEPTA APIS</a>
+				</div>
+				<div id="disqus_thread"></div>
+				<script type="text/javascript">
+					/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+					var disqus_shortname = 'tyackherokuapps';
+					// required: replace example with your forum shortname
+
+					/* * * DON'T EDIT BELOW THIS LINE * * */
+					(function() {
+						var dsq = document.createElement('script');
+						dsq.type = 'text/javascript';
+						dsq.async = true;
+						dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+						(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+					})();
+				</script>
+				<noscript>
+					Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+				</noscript>
+				<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+			</div>
+		</div>
+		<!-- Placed at the end of the document so the pages load faster -->
+		<script src="js/jquery-1.10.2.min.js"></script>
+		<!-- Latest compiled and minified JavaScript -->
+		<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+		<script src="js/leaflet.js"></script>
+		<script src="js/unlock-philadelphia.js"></script>
+		<script type="text/javascript">
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-32865952-2']);
+			_gaq.push(['_trackPageview']);
+
+			(function() {
+				var ga = document.createElement('script');
+				ga.type = 'text/javascript';
+				ga.async = true;
+				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+				var s = document.getElementsByTagName('script')[0];
+				s.parentNode.insertBefore(ga, s);
+			})();
+		</script>
+	</body>
+</html>

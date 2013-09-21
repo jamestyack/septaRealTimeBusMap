@@ -113,6 +113,11 @@ get '/bootstraplayouttest' do
   erb :bootstrap_layout_test
 end
 
+# for testing bootstrap layout
+get '/unlockphiladelphia' do
+  erb :unlock_philadelphia
+end
+
 # --- get from Wunderground
 # gets the first observation for the day that is equal to or greater than the passed time
 
