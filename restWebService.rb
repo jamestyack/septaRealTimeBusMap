@@ -7,6 +7,7 @@ require 'set'
 require 'mongo'
 require 'uri'
 require 'pp'
+require 'oauth'
 
 include Mongo
 
@@ -148,5 +149,39 @@ get '/septa/stations/line/:line' do
   
   return doc.to_json
 end
+
+get '/yelp/wheelchairaccess/:lat/:lng/:radius' do
+  consumer_key = 'SHCka_4aX1X9KEladGNLrA'
+  consumer_secret = 'oU3EMPbLR9KzzC_Fd9kAWx3nK0U'
+  token = 'QxPp39ZPLdoZv2Vngpnv6D4ggHOEE7JM'
+  token_secret = 'zNMIYUpt1ZwfjJppuuuijNp9qIE'
+
+  api_host = 'api.yelp.com'
+
+  consumer = OAuth::Consumer.new(consumer_key, consumer_secret, {:site => "http://#{api_host}"})
+  access_token = OAuth::AccessToken.new(consumer, token, token_secret)
+  
+  path = "/v2/search?term=wheelchair+accessible&ll=#{params[:lat]},#{params[:lng]}&radius_filter=#{params[:radius]}"
+
+  p access_token.get(path).body
+end
+
+get '/yelp/business/:id' do
+  consumer_key = 'SHCka_4aX1X9KEladGNLrA'
+  consumer_secret = 'oU3EMPbLR9KzzC_Fd9kAWx3nK0U'
+  token = 'QxPp39ZPLdoZv2Vngpnv6D4ggHOEE7JM'
+  token_secret = 'zNMIYUpt1ZwfjJppuuuijNp9qIE'
+
+  api_host = 'api.yelp.com'
+
+  consumer = OAuth::Consumer.new(consumer_key, consumer_secret, {:site => "http://#{api_host}"})
+  access_token = OAuth::AccessToken.new(consumer, token, token_secret)
+
+  path = "/v2/business/#{params[:id]}"
+
+  p access_token.get(path).body
+end
+
+
 
 

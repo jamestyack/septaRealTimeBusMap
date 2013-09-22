@@ -100,11 +100,39 @@
 								</div>
 							</div>
 						</div>
-
+						<div class="panel panel-default spacer">
+							<div class="panel-heading">
+								Station accessibility feedback
+							</div>
+							<div class="panel-body">
+								<a href="https://twitter.com/intent/tweet?screen_name=septa&text=station%20..." class="twitter-mention-button">Tweet to @septa</a>
+								<script>
+									! function(d,s,id) {
+									var js, fjs=d.getElementsByTagName(s)[0], p=/^http:/.test(d.location)?'http':'https';
+									if(!d.getElementById(id)) {
+									js=d.createElement(s);
+									js.id=id;
+									js.src=p+'://platform.twitter.com/widgets.js';
+									fjs.parentNode.insertBefore(js,fjs);
+									}
+									}(document,'script','twitter-wjs');
+								</script>
+							</div>
+						</div>
 					</div>
 					<div class="col-md-9">
 						<div id="map"></div>
+						<div class="panel panel-default spacer-small">
+							<div class="panel-heading">
+								<img style='float:right;' src="http://s3-media1.ak.yelpcdn.com/assets/2/www/img/1589098a542f/developers/Powered_By_Yelp_White.png" alt="Powered by Yelp, white" width="115" height="25" />
+								<h3 class="panel-title">Click Stations to see wheelchair accessible restaurants, shops and other services nearby.</h3>
+							</div>
+							<div id="yelpSearchResults" class="panel-body">
+								Yelp search results here
+							</div>
+						</div>
 					</div>
+
 				</div>
 				<div class="well spacer">
 					Please leave comments, suggestions and feedback below. Visualisation designed and developed by Transit Apps for Philly Hackathon using data from various <a href="http://www.septa.com">SEPTA APIS</a>

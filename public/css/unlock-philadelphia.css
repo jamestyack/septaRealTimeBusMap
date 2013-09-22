@@ -1,4 +1,4 @@
-#map { height: 500px; }
+#map { height: 400px; }
 
 #footer {
     background-color: #F5F5F5;
@@ -49,3 +49,4 @@ body {
 .panel-body {
 	padding: 12px;
 }
+

@@ -5,16 +5,16 @@ var isFirstView = false;
 var accessTypes = ['Wheelchair', 'Escalator', 'StairsOnly'];
 var accessTypesLabels = ['Wheelchair Accessible with Elevator', 'Escalator/Stairs Only', 'Stairs Only'];
 var accessTypeColors = {};
-var stationData = {};
 accessTypeColors['Wheelchair'] = "#FFCC00";
 accessTypeColors['Escalator'] = "#FF0000";
 accessTypeColors['StairsOnly'] = "#4A1486";
+var twitterCode = "<a href='https://twitter.com/intent/tweet?screen_name=septa' class='twitter-mention-button' data-related='septa'>Tweet to @septa</a><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>";
 
 
 var mapPosition = {};
 mapPosition["MarketEast"] = {
 	"coords" : [39.9525, -75.1580556],
-	"zoom" : 12
+	"zoom" : 13
 };
 
 var cloudmadeLayer = L.tileLayer(cloudmadeUrl, {
@@ -100,7 +100,7 @@ function addLayersAndShow(stationData, line) {
 				stations[getAccessType(station)].push(circle);
 			})();
 		}
-		info.update(line + ' stations');
+		info.update(getLineName(line) + ' stations');
 		legend.update('severity');
 	
 
@@ -109,6 +109,18 @@ function addLayersAndShow(stationData, line) {
 	stationLayerGroups['StairsOnly'] = L.layerGroup(stations['StairsOnly']);
 	console.log("layers populated");
 	showStations();
+}
+
+function getLineName(line) {
+	if (line == "MFL") {
+		return "Market-Frankford Line"
+	} else if (line == "BSS") {
+		return "Broad Street Line"
+	} else {
+		console.error(line + " unknown")
+		return "";
+	}
+	
 }
 
 function getExtraStationInfo(station) {
@@ -190,9 +202,6 @@ function addInfoBox() {
 	};
 	info.update = function(title) {
 		this._div.innerHTML = '<h4>' + ( title ? title : 'Loading data') + '</h4>';
-		if (isFirstView) {
-			this._div.innerHTML += '<small>Click stations for more details</small>'
-		}
 	};
 	info.addTo(map);
 }
