@@ -195,7 +195,10 @@ function formatStation(station) {
 	var response = "<h5>" + station.stop_name + " " + getLine(station) + "</h5>";
 	response += "Station is " + (station.wheelchair_boarding ? "" : " not") + " wheelchair accessible<br />";
 	if (station.escalator == "1") {
-		response += "Escalator is provided</br>"
+		response += "Escalator is provided<br />"
+	}
+	if (station.access_notes) {
+		response += station.access_notes + "<br />"
 	}
 	return response;
 }
