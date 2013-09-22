@@ -85,12 +85,23 @@ function addLayersAndShow(stationData, line) {
 			(function() {
 				// go through each station
 				var station = stationData.stations[i];
+				if (station.access_alert) {
+					var alertIcon = L.icon({
+					    iconUrl: 'images/alert.gif',
+					    iconSize:     [30, 30], // size of the icon
+					    iconAnchor:   [15, 15], // point of the icon which will correspond to marker's location
+					    popupAnchor:  [0, 0] // point from which the popup should open relative to the iconAnchor
+					});
+					marker = L.marker([station.stop_lat, station.stop_lon], {icon: alertIcon});
+					marker.bindPopup(formatStation(station))
+					stations[getAccessType(station)].push(marker);
+				}
 				circle = L.circle([station.stop_lat, station.stop_lon], 50, {
 					color : getAccessTypeColor(station),
 					opacity : .6,
 					fillOpacity : .4
 				})
-				circle.bindPopup(formatStation(station) + "<br /><div id='extraStationInfo'>Fetching extra info and alerts... </div>");
+				circle.bindPopup(formatStation(station));
 				circle.on('click', function(e) {
 					isFirstView = false;
 					var latlng = e.latlng;
@@ -193,6 +204,9 @@ function showStations() {
 
 function formatStation(station) {
 	var response = "<h5>" + station.stop_name + " " + getLine(station) + "</h5>";
+	if (station.access_alert) {
+		return response += "<p class='text-danger'><strong>" + station.access_alert + "</strong></p>"
+	}
 	response += "Station is " + (station.wheelchair_boarding ? "" : " not") + " wheelchair accessible<br />";
 	if (station.escalator == "1") {
 		response += "Escalator is provided<br />"
