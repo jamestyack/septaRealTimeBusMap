@@ -5,16 +5,16 @@ var isFirstView = false;
 var accessTypes = ['Wheelchair', 'Escalator', 'StairsOnly'];
 var accessTypesLabels = ['Wheelchair Accessible with Elevator', 'Escalator/Stairs Only', 'Stairs Only'];
 var accessTypeColors = {};
-accessTypeColors['Wheelchair'] = "#FFCC00";
-accessTypeColors['Escalator'] = "#FF0000";
-accessTypeColors['StairsOnly'] = "#4A1486";
+accessTypeColors['Wheelchair'] = "#1ca92c";
+accessTypeColors['Escalator'] = "#ead103";
+accessTypeColors['StairsOnly'] = "#c50021";
 var twitterCode = "<a href='https://twitter.com/intent/tweet?screen_name=septa' class='twitter-mention-button' data-related='septa'>Tweet to @septa</a><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>";
 
 
 var mapPosition = {};
 mapPosition["MarketEast"] = {
 	"coords" : [39.9525, -75.1580556],
-	"zoom" : 14
+	"zoom" : 12
 };
 
 var cloudmadeLayer = L.tileLayer(cloudmadeUrl, {
@@ -114,20 +114,21 @@ function addLayersAndShow(stationData, line) {
 
 function updateYelpResults(station) {
 	$.getJSON('/yelp/wheelchairaccess/' + station.stop_lat + "/" + station.stop_lon + "/1000", function(data) {
-		$('#yelp-results').html("Accessible places near " + station.stop_name + createListOfResults(data));
+		$('#yelp-heading').html("What's accessible near " + station.stop_name + "?");
+		$('#yelp-results').html(createListOfResults(data));
 	});
 }
 
 function createListOfResults(data) {
-	var resultsHtml = "<ul>";
+	var resultsHtml = "<small><ul>";
 	for (var i=0; i<data.businesses.length && i<10; i++) {
 		var business = data.businesses[i];
 		resultsHtml += "<li>";
-		resultsHtml += "<a target='_blank' href='" + business.url + "'>" + business.name + "</a> (" + Math.round(business.distance) + " metres from station) " + business.location.display_address[0] + " " + business.display_phone;
+		resultsHtml += "<a target='_blank' href='" + business.url + "'>" + business.name + "</a> " + business.categories[0][0] +" (" + Math.round(business.distance) + " metres from station), " + business.location.display_address[0] + " " + business.display_phone + " <img src='" + business.rating_img_url + "'/> (" + business.review_count + " votes) ";
 		resultsHtml += "</li>";
 	}
 	
-	return resultsHtml + "</ul>"
+	return resultsHtml + "</ul><a href=''>More results and filters...</a></small>"
 	
 }
 

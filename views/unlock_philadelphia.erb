@@ -29,7 +29,7 @@
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 						</button>
-						<a class="navbar-brand" href="">Unlock Philadelphia</a>
+						<a class="navbrand-img" href=""><img src="images/unlock_logosm.jpg" width="140" height="42" alt="Unlock_Philly logo" title="Unlock Philly Logo"></a>
 					</div>
 					<ul class="nav navbar-nav">
 						<!--<li class="active">
@@ -39,11 +39,17 @@
 							<a href="/unlockphiladelphia">Stations and services around them</a>
 						</li>
 						<li>
-							<a href="">Trip Planner</a>
+							<a href="http://opentrips.codeforphilly.org">Trip Planner</a>
+						</li>
+						<li>
+							<a href="">Contact</a>
 						</li>
 						<!--<li>
 						<a href="#contact">Contact</a>
 						</li>-->
+						<li>
+						<a class="navimg" target='_blank' href='http://www.septa.org/access/'><img src="images/sept_logosm.png" width="40" height="21" alt="Septa logo linking to Accessible SEPTA website" title="septa logo"></a>
+						</li>
 					</ul>
 				</div>
 			</div>
@@ -65,17 +71,17 @@
 							<div class="panel-body">
 								Filter Station Access
 								<div class="radio">
-									<label>
+									<label><img src="images/elevatorgreensm.png" width="32" height="32" alt="Elevator">
 										<input type="checkbox" name="filterOptions" id="filterWheelchair" value="Wheelchair" checked>
-										Wheelchair access (elevator)</label>
+										Wheelchair access</label>
 								</div>
 								<div class="radio">
-									<label>
+									<label><img src="images/escaltoryelsm.png" width="32" height="32" alt="Escalator">
 										<input type="checkbox" name="filterOptions" id="filterEscalator" value="Escalator" checked>
 										Escalators and stairs only</label>
 								</div>
 								<div class="radio">
-									<label>
+									<label><img src="images/stairsredsm.png" width="32" height="32" alt="Stairs">
 										<input type="checkbox" name="filterOptions" id="filterStairsOnly" value="StairsOnly" checked>
 										Stairs Only</label>
 								</div>
@@ -128,7 +134,7 @@
 							<div class="panel panel-default spacer-small">
 								<div class="panel-heading panel-title">
 									<a href="http://www.yelp.com"><img style='float:right;' src="http://s3-media1.ak.yelpcdn.com/assets/2/www/img/1589098a542f/developers/Powered_By_Yelp_White.png" alt="Powered by Yelp, white" width="115" height="25" /></a>
-									<h5 class="panel-title">Click Stations to see wheelchair accessible restaurants, shops and other services nearby.</h5>
+									<h5 class="panel-title"><div id="yelp-heading">Click Stations to see wheelchair accessible restaurants, shops and other services nearby</div></h5>
 								</div>
 								<div class="panel-body" id="yelp-results"><!-- start of panel body -->
 								</div><!-- end of panel body containing  yelp search results -->
