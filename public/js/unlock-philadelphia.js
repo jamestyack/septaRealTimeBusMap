@@ -94,6 +94,13 @@ function addLayersAndShow(stationData, line) {
 					});
 					marker = L.marker([station.stop_lat, station.stop_lon], {icon: alertIcon});
 					marker.bindPopup(formatStation(station))
+					marker.on('click', function(e) {
+						isFirstView = false;
+						var latlng = e.latlng;
+						map.panTo(new L.LatLng(latlng.lat, latlng.lng));
+						getExtraStationInfo(station._id);
+						updateYelpResults(station);
+					});
 					stations[getAccessType(station)].push(marker);
 				}
 				circle = L.circle([station.stop_lat, station.stop_lon], 50, {
@@ -205,9 +212,10 @@ function showStations() {
 function formatStation(station) {
 	var response = "<h5>" + station.stop_name + " " + getLine(station) + "</h5>";
 	if (station.access_alert) {
-		return response += "<p class='text-danger'><strong>" + station.access_alert + "</strong></p>"
+		response += "<p class='text-danger'><strong>" + station.access_alert + "</strong></p>"
+	} else {
+		response += "Station is " + (station.wheelchair_boarding ? "" : " not") + " wheelchair accessible<br />";
 	}
-	response += "Station is " + (station.wheelchair_boarding ? "" : " not") + " wheelchair accessible<br />";
 	if (station.escalator == "1") {
 		response += "Escalator is provided<br />"
 	}
