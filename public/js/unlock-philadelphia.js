@@ -96,6 +96,7 @@ function addLayersAndShow(stationData, line) {
 					var latlng = e.latlng;
 					map.panTo(new L.LatLng(latlng.lat, latlng.lng));
 					getExtraStationInfo(station._id);
+					updateYelpResults(station);
 				});
 				stations[getAccessType(station)].push(circle);
 			})();
@@ -109,6 +110,25 @@ function addLayersAndShow(stationData, line) {
 	stationLayerGroups['StairsOnly'] = L.layerGroup(stations['StairsOnly']);
 	console.log("layers populated");
 	showStations();
+}
+
+function updateYelpResults(station) {
+	$.getJSON('/yelp/wheelchairaccess/' + station.stop_lat + "/" + station.stop_lon + "/1000", function(data) {
+		$('#yelp-results').html("Accessible places near " + station.stop_name + createListOfResults(data));
+	});
+}
+
+function createListOfResults(data) {
+	var resultsHtml = "<ul>";
+	for (var i=0; i<data.businesses.length && i<10; i++) {
+		var business = data.businesses[i];
+		resultsHtml += "<li>";
+		resultsHtml += "<a target='_blank' href='" + business.url + "'>" + business.name + "</a> (" + Math.round(business.distance) + " metres from station) " + business.location.display_address[0] + " " + business.display_phone;
+		resultsHtml += "</li>";
+	}
+	
+	return resultsHtml + "</ul>"
+	
 }
 
 function getLineName(line) {
