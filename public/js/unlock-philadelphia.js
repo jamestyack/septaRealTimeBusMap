@@ -14,7 +14,7 @@ var twitterCode = "<a href='https://twitter.com/intent/tweet?screen_name=septa' 
 var mapPosition = {};
 mapPosition["MarketEast"] = {
 	"coords" : [39.9525, -75.1580556],
-	"zoom" : 13
+	"zoom" : 14
 };
 
 var cloudmadeLayer = L.tileLayer(cloudmadeUrl, {

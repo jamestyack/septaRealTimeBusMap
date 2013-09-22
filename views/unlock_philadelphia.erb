@@ -35,33 +35,15 @@
 						<!--<li class="active">
 						<a href="http://www.tyack.net">Blog</a>
 						</li>-->
+						<li class="active">
+							<a href="/unlockphiladelphia">Stations and services around them</a>
+						</li>
 						<li>
-							<a href="">Home</a>
+							<a href="">Trip Planner</a>
 						</li>
 						<!--<li>
 						<a href="#contact">Contact</a>
 						</li>-->
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Other Open Data Apps<b class="caret"></b></a>
-							<ul class="dropdown-menu">
-								<li>
-									<a href="/phillybusexplorer">Philly Bus Explorer</a>
-								</li>
-								<!--<li>
-								<a href="#">Something else here</a>
-								</li>
-								<li class="divider"></li>
-								<li class="dropdown-header">
-								Nav header
-								</li>
-								<li>
-								<a href="#">Separated link</a>
-								</li>
-								<li>
-								<a href="#">One more separated link</a>
-								</li>-->
-							</ul>
-						</li>
 					</ul>
 				</div>
 			</div>
@@ -78,15 +60,14 @@
 								<input type="radio" name="line" id="lineBSS" value="BSS">
 								Broad Street </label>
 						</div>
+						
 						<div class="panel panel-default spacer">
-							<div class="panel-heading">
-								Filter stations
-							</div>
 							<div class="panel-body">
+								Filter Station Access
 								<div class="radio">
 									<label>
 										<input type="checkbox" name="filterOptions" id="filterWheelchair" value="Wheelchair" checked>
-										Wheelchair accessible with elevator</label>
+										Wheelchair access (elevator)</label>
 								</div>
 								<div class="radio">
 									<label>
@@ -98,14 +79,24 @@
 										<input type="checkbox" name="filterOptions" id="filterStairsOnly" value="StairsOnly" checked>
 										Stairs Only</label>
 								</div>
+								<div class="radio">
+									<label>
+										More filters...</label>
+								</div>
 							</div>
 						</div>
+						<div class="input-group spacer">
+							<span class="input-group-btn">
+							<button class="btn btn-sm" type="button">
+								Find location
+							</button>
+							</span>
+							<input type="text" class="form-control input-sm">
+						</div>
 						<div class="panel panel-default spacer">
-							<div class="panel-heading">
-								Station accessibility feedback
-							</div>
 							<div class="panel-body">
-								<a href="https://twitter.com/intent/tweet?screen_name=septa&text=station%20..." class="twitter-mention-button">Tweet to @septa</a>
+								Raise accessibility awareness
+								<a href="https://twitter.com/intent/tweet?screen_name=septa&text=%23accessibility" class="twitter-mention-button spacer">Tweet to @septa</a>
 								<script>
 									! function(d,s,id) {
 									var js, fjs=d.getElementsByTagName(s)[0], p=/^http:/.test(d.location)?'http':'https';
@@ -117,6 +108,25 @@
 									}
 									}(document,'script','twitter-wjs');
 								</script>
+							</div>
+						</div>
+						<div class="panel panel-default spacer">
+							<div class="panel-heading">
+								Other Resources
+							</div>
+							<div class="panel-body">
+								<li>
+									<a href="http://www.septa.org/access/">Accessible SEPTA</a>
+								</li>
+								<li>
+									<a href="http://www.septa.org/access/vis-impaired.html">Assistance for Blind & Visually Impaired Customers</a>
+								</li>
+								<li>
+									<a href="http://www.septa.org/access/atc-inquiry.html">Accessible Travel Center</a>
+								</li>
+								<li>
+									<a href="http://www.septa.org/access/station.html">Station Accessibility</a>
+								</li>
 							</div>
 						</div>
 					</div>
@@ -135,7 +145,8 @@
 
 				</div>
 				<div class="well spacer">
-					Please leave comments, suggestions and feedback below. Visualisation designed and developed by Transit Apps for Philly Hackathon using data from various <a href="http://www.septa.com">SEPTA APIS</a>
+					<h4>Please join us at <a href='http://codeforphilly.org'>Code For Philly</a> to get involved and help improve this app!</h4>
+					Leave comments and suggestions for this app below. This is a prototype and was developed by a small project team at the <a href='http://appsforphilly.org'>Transit Apps for Philly</a> Hackathon using data from various <a href="http://www.septa.com">SEPTA APIS</a>.
 				</div>
 				<div id="disqus_thread"></div>
 				<script type="text/javascript">
