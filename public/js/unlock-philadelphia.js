@@ -93,7 +93,8 @@ function addLayersAndShow(stationData, line) {
 					    popupAnchor:  [0, 0] // point from which the popup should open relative to the iconAnchor
 					});
 					marker = L.marker([station.stop_lat, station.stop_lon], {icon: alertIcon});
-					marker.bindPopup(formatStation(station))
+					marker.bindPopup(formatStation(station));
+					marker.bindLabel(station.stop_name + ": Elevator outage reported").addTo(map);
 					marker.on('click', function(e) {
 						isFirstView = false;
 						var latlng = e.latlng;
@@ -109,6 +110,7 @@ function addLayersAndShow(stationData, line) {
 					fillOpacity : .4
 				})
 				circle.bindPopup(formatStation(station));
+				circle.bindLabel(station.stop_name).addTo(map);
 				circle.on('click', function(e) {
 					isFirstView = false;
 					var latlng = e.latlng;
