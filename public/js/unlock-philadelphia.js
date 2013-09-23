@@ -29,12 +29,12 @@ var map = L.map('map', {
 
 $(document).ready(function() {
 
-	var mfl = new L.KML("/kml/MFL.kml", {async: true});
-	var bss = new L.KML("/kml/BSS.kml", {async: true});
+	//var mfl = new L.KML("/kml/MFL.kml", {async: true});
+	//var bss = new L.KML("/kml/BSS.kml", {async: true});
 	
 	//map.addLayer(mfl);
 	//map.addLayer(bss);
-
+	
 	// ensures checkboxes reset in firefox
 	$(":checkbox").attr("autocomplete", "off");
 	
