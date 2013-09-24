@@ -150,8 +150,11 @@ get '/septa/stations/line/:line' do
   
   content_type :json
   stationsCol = settings.mongo_db['septa_stations']
-  result = stationsCol.find({params[:line] => "1"})
-  
+  if (params[:line] == "MFLBSS")
+    result = stationsCol.find({:$or => [{:MFL => "1"}, {:BSS => "1"}] })
+  else 
+    result = stationsCol.find({params[:line] => "1"})
+  end
   doc = {}
   doc["line"] = "#{params[:line]}"
   doc["stations"]=result.to_a
