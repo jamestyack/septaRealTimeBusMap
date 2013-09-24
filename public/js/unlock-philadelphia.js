@@ -85,7 +85,7 @@ function addLayersAndShow(stationData, line) {
 			(function() {
 				// go through each station
 				var station = stationData.stations[i];
-				if (station.access_alert) {
+				if (station.elevatorOutage) {
 					var alertIcon = L.icon({
 					    iconUrl: 'images/alert.gif',
 					    iconSize:     [30, 30], // size of the icon
@@ -213,8 +213,8 @@ function showStations() {
 
 function formatStation(station) {
 	var response = "<h5>" + station.stop_name + " " + getLine(station) + "</h5>";
-	if (station.access_alert) {
-		response += "<p class='text-danger'><strong>" + station.access_alert + "</strong></p>"
+	if (station.elevatorOutage) {
+		response += "<p class='text-danger'>" + station.elevatorOutage + "</p>"
 	} else {
 		response += "Station is " + (station.wheelchair_boarding ? "" : " not") + " wheelchair accessible<br />";
 	}

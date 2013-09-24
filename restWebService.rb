@@ -8,6 +8,7 @@ require 'mongo'
 require 'uri'
 require 'pp'
 require 'oauth'
+require 'feedzirra'
 
 include Mongo
 
@@ -139,6 +140,15 @@ get '/weather/:lat/:lng/:date/:time' do
 end
 
 get '/septa/stations/line/:line' do
+  
+  feed = Feedzirra::Feed.fetch_and_parse("http://www2.septa.org/rss/elevators/index.xml")
+  outages = {};
+  feed.entries.each do | entry |
+    stationName = entry.title.gsub(/\s+/m, ' ').strip.split(" ")[2];
+    outages[stationName] = entry.summary
+  end
+  pp outages
+  
   content_type :json
   stationsCol = settings.mongo_db['septa_stations']
   result = stationsCol.find({params[:line] => "1"})
@@ -147,6 +157,20 @@ get '/septa/stations/line/:line' do
   doc["line"] = "#{params[:line]}"
   doc["stations"]=result.to_a
   
+  doc["stations"].each_with_index do | station, i | 
+    
+    
+    outages.each do | stationName, outageDesc |
+      puts "checking " + station["stop_name"] + " with " + stationName
+      if station["stop_name"].gsub(/-/, ' ').include?(stationName.gsub(/-/, ' '))
+        puts doc["stations"][i].class
+        doc["stations"][i]["elevatorOutage"] = outageDesc;
+        puts "Outage at " + station["stop_name"]
+      end
+    end
+    
+    #puts i.to_s + " : " + station["stop_name"] + " BSON object is:- " + station.to_s
+  end
   return doc.to_json
 end
 
