@@ -12,9 +12,9 @@ var twitterCode = "<a href='https://twitter.com/intent/tweet?screen_name=septa' 
 
 
 var mapPosition = {};
-mapPosition["MarketEast"] = {
-	"coords" : [39.9525, -75.1580556],
-	"zoom" : 12
+mapPosition["Fairmount"] = {
+	"coords" : [39.966959, -75.160391],
+	"zoom" : 13
 };
 
 var cloudmadeLayer = L.tileLayer(cloudmadeUrl, {
@@ -22,8 +22,8 @@ var cloudmadeLayer = L.tileLayer(cloudmadeUrl, {
 });
 
 var map = L.map('map', {
-	center : mapPosition["MarketEast"].coords,
-	zoom : mapPosition["MarketEast"].zoom,
+	center : mapPosition["Fairmount"].coords,
+	zoom : mapPosition["Fairmount"].zoom,
 	layers : [cloudmadeLayer]
 });
 
