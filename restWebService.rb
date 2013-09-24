@@ -147,7 +147,6 @@ get '/septa/stations/line/:line' do
     stationName = entry.title.gsub(/\s+/m, ' ').strip.split(" ")[2];
     outages[stationName] = entry.summary
   end
-  pp outages
   
   content_type :json
   stationsCol = settings.mongo_db['septa_stations']
@@ -162,6 +161,7 @@ get '/septa/stations/line/:line' do
     
     outages.each do | stationName, outageDesc |
       puts "checking " + station["stop_name"] + " with " + stationName
+      # have to remove hypens due to naming inconsistency
       if station["stop_name"].gsub(/-/, ' ').include?(stationName.gsub(/-/, ' '))
         puts doc["stations"][i].class
         doc["stations"][i]["elevatorOutage"] = outageDesc;
