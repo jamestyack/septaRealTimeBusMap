@@ -214,16 +214,16 @@ function showStations() {
 function formatStation(station) {
 	var response = "<h5>" + station.stop_name + " " + getLine(station) + "</h5>";
 	if (station.elevatorOutage) {
-		response += "<p class='text-danger'>" + station.elevatorOutage + "</p>"
+		response += "<p class='text-danger'><strong>ELEVATOR OUTAGE</strong></br>" + station.elevatorOutage + "</p>"
 	} else {
 		response += "Station is " + (station.wheelchair_boarding ? "" : " not") + " wheelchair accessible<br />";
 	}
-	if (station.escalator == "1") {
-		response += "Escalator is provided<br />"
-	}
-	if (station.access_notes) {
-		response += station.access_notes + "<br />"
-	}
+	// if (station.escalator == "1") {
+		// response += "Escalator is provided<br />"
+	// }
+	// if (station.access_notes) {
+		// response += station.access_notes + "<br />"
+	// }
 	return response;
 }
 
