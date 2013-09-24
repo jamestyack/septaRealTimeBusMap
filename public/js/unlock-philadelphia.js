@@ -157,6 +157,8 @@ function getLineName(line) {
 		return "Market-Frankford Line"
 	} else if (line == "BSS") {
 		return "Broad Street Line"
+	} else if (line == "MFLBSS") {
+		return "Market-Frankford/Broad Street Line"
 	} else {
 		console.error(line + " unknown")
 		return "";
