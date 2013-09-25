@@ -99,7 +99,6 @@ function addLayersAndShow(stationData, line) {
 						isFirstView = false;
 						var latlng = e.latlng;
 						map.panTo(new L.LatLng(latlng.lat, latlng.lng));
-						getExtraStationInfo(station._id);
 						updateYelpResults(station);
 					});
 					stations[getAccessType(station)].push(marker);
@@ -115,7 +114,6 @@ function addLayersAndShow(stationData, line) {
 					isFirstView = false;
 					var latlng = e.latlng;
 					map.panTo(new L.LatLng(latlng.lat, latlng.lng));
-					getExtraStationInfo(station._id);
 					updateYelpResults(station);
 				});
 				stations[getAccessType(station)].push(circle);
