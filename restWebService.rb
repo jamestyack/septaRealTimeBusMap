@@ -19,7 +19,7 @@ configure :production do
   require 'newrelic_rpm'
 end
 
-configure do  
+configure do
   db_details = URI.parse(ENV['MONGOHQ_URL'])
   conn = MongoClient.new(db_details.host, db_details.port)
   db_name = db_details.path.gsub(/^\//, '')
@@ -37,7 +37,7 @@ end
 # -------- Philly Bus Explorer ----------
 
 get '/septa/route/locations/:id' do
-	RestClient.get "http://www3.septa.org/transitview/bus_route_data/#{params[:id]}"
+  RestClient.get "http://www3.septa.org/transitview/bus_route_data/#{params[:id]}"
 end
 
 # REST service to get routes by zone
@@ -46,7 +46,6 @@ get '/septa/zone/:zone/routes' do
   zonesCol = settings.mongo_db['Zones']
   result = zonesCol.find_one({:_id => params[:zone]})
   return "{'_id':'#{params[:zone]}', 'buses':[]}" if result.nil?
-  puts "thanks mongo for telling us that zone #{params[:zone]} haz routes #{result["buses"]}"
   return result["buses"].to_json
 end
 
@@ -104,7 +103,7 @@ get '/nottinghamtraffic/accidents/:year/:severity/during/:time_category' do
   return "{'year':'#{params[:year]}', 'accidents':[]}" if result.nil?
   return result.to_a.to_json
 end
- 
+
 # main page erb for nottingham traffic accidents
 get '/nottinghamtrafficaccidents' do
   erb :nottm_traffic_accidents
@@ -129,50 +128,54 @@ get '/weather/:lat/:lng/:date/:time' do
   response = RestClient.get uri
   jsonResp = JSON.parse(response)
   hourOfRequest = params[:time][0..1].to_i
-  jsonResp['history']['observations'].each do | observation | 
+  jsonResp['history']['observations'].each do | observation |
     hour = observation['date']['hour'].to_i
     if hour == hourOfRequest
-      return observation.to_json;
+    return observation.to_json;
     end
   end
   # otherwise just return last value
   return jsonResp['history']['observations'][jsonResp['history']['observations'].length - 1].to_json
 end
 
-get '/septa/stations/line/:line' do
-  
-  feed = Feedzirra::Feed.fetch_and_parse("http://www2.septa.org/rss/elevators/index.xml")
-  outages = {};
-  feed.entries.each do | entry |
-    stationName = entry.title.gsub(/\s+/m, ' ').strip.split(" ")[2];
-    outages[stationName] = entry.summary
-  end
-  
+get '/septa/elevator/outages' do
   content_type :json
+  return getElevatorOutagesFromSeptaRss().to_json;
+end
+
+def getElevatorOutagesFromSeptaRss()
+  feed = Feedzirra::Feed.fetch_and_parse("http://www2.septa.org/rss/elevators/index.xml")
+  outages = {}
+  feed.entries.each do | entry |
+    if (entry.title.include?("No Elevator Outages")) 
+      outages["elevators_ok"] = "There are no reported elevator outages"
+    else 
+      stationName = entry.title.gsub(/\s+/m, ' ').strip.split(" ")[2];
+      outages[stationName] = entry.summary
+    end
+  end
+  return outages;
+end
+
+get '/septa/stations/line/:line' do
+  content_type :json
+  outages = getElevatorOutagesFromSeptaRss();
   stationsCol = settings.mongo_db['septa_stations']
   if (params[:line] == "MFLBSS")
     result = stationsCol.find({:$or => [{:MFL => "1"}, {:BSS => "1"}] })
-  else 
+  else
     result = stationsCol.find({params[:line] => "1"})
   end
   doc = {}
   doc["line"] = "#{params[:line]}"
   doc["stations"]=result.to_a
-  
-  doc["stations"].each_with_index do | station, i | 
-    
-    
+  doc["stations"].each_with_index do | station, i |
     outages.each do | stationName, outageDesc |
-      puts "checking " + station["stop_name"] + " with " + stationName
-      # have to remove hypens due to naming inconsistency
+    # have to remove hypens due to naming inconsistency
       if station["stop_name"].gsub(/-/, ' ').include?(stationName.gsub(/-/, ' '))
-        puts doc["stations"][i].class
         doc["stations"][i]["elevatorOutage"] = outageDesc;
-        puts "Outage at " + station["stop_name"]
       end
     end
-    
-    #puts i.to_s + " : " + station["stop_name"] + " BSON object is:- " + station.to_s
   end
   return doc.to_json
 end
@@ -182,33 +185,12 @@ get '/yelp/wheelchairaccess/:lat/:lng/:radius' do
   consumer_secret = 'oU3EMPbLR9KzzC_Fd9kAWx3nK0U'
   token = 'QxPp39ZPLdoZv2Vngpnv6D4ggHOEE7JM'
   token_secret = 'zNMIYUpt1ZwfjJppuuuijNp9qIE'
-
   api_host = 'api.yelp.com'
-
   consumer = OAuth::Consumer.new(consumer_key, consumer_secret, {:site => "http://#{api_host}"})
   access_token = OAuth::AccessToken.new(consumer, token, token_secret)
-  
   path = "/v2/search?term=wheelchair+accessible&ll=#{params[:lat]},#{params[:lng]}&radius_filter=#{params[:radius]}"
-
   p access_token.get(path).body
 end
-
-get '/yelp/business/:id' do
-  consumer_key = 'SHCka_4aX1X9KEladGNLrA'
-  consumer_secret = 'oU3EMPbLR9KzzC_Fd9kAWx3nK0U'
-  token = 'QxPp39ZPLdoZv2Vngpnv6D4ggHOEE7JM'
-  token_secret = 'zNMIYUpt1ZwfjJppuuuijNp9qIE'
-
-  api_host = 'api.yelp.com'
-
-  consumer = OAuth::Consumer.new(consumer_key, consumer_secret, {:site => "http://#{api_host}"})
-  access_token = OAuth::AccessToken.new(consumer, token, token_secret)
-
-  path = "/v2/business/#{params[:id]}"
-
-  p access_token.get(path).body
-end
-
 
 
 

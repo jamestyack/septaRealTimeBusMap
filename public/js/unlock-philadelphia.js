@@ -144,8 +144,11 @@ function createListOfResults(data) {
 	for (var i=0; i<data.businesses.length && i<10; i++) {
 		var business = data.businesses[i];
 		resultsHtml += "<li>";
-		resultsHtml += "<a target='_blank' href='" + business.url + "'>" + business.name + "</a> " + business.categories[0][0] +" (" + Math.round(business.distance) + " metres from station), " + business.location.display_address[0] + " " + business.display_phone + " <img src='" + business.rating_img_url + "'/> (" + business.review_count + " votes) ";
+		resultsHtml += "<a target='_blank' href='" + business.url + "'>" + business.name + "</a> " + business.categories[0][0] +" (" +
+			 Math.round(business.distance) + " metres from station), " + business.location.display_address[0] + " " + business.display_phone +
+			 " <img title='" + business.snippet_text + "' src='" + business.rating_img_url + "'/></a> (" + business.review_count + " votes) ";
 		resultsHtml += "</li>";
+		$('#popoverData').popover();
 	}
 	
 	return resultsHtml + "</ul><a href=''>More results and filters...</a></small>"
@@ -164,10 +167,6 @@ function getLineName(line) {
 		return "";
 	}
 	
-}
-
-function getExtraStationInfo(station) {
-	// TODO ajax stuff here to call for extra station/alert info
 }
 
 function getAccessTypeColor(station) {
@@ -220,12 +219,6 @@ function formatStation(station) {
 	} else {
 		response += "Station is " + (station.wheelchair_boarding ? "" : " not") + " wheelchair accessible<br />";
 	}
-	// if (station.escalator == "1") {
-		// response += "Escalator is provided<br />"
-	// }
-	// if (station.access_notes) {
-		// response += station.access_notes + "<br />"
-	// }
 	return response;
 }
 
@@ -251,7 +244,14 @@ function addInfoBox() {
 		return this._div;
 	};
 	info.update = function(title) {
-		this._div.innerHTML = '<h4>' + ( title ? title : 'Loading data') + '</h4>';
+		this._div.innerHTML = '<h4>' + ( title ? title : 'Loading data') + '</h4><div id="stationOutageMessage"></div>';
+		$.getJSON("/septa/elevator/outages", function(data) {
+			if (data.elevators_ok) {
+				$('#stationOutageMessage').html(data.elevators_ok);
+			}
+		});
+	
+		
 	};
 	info.addTo(map);
 }
