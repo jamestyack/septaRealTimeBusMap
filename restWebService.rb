@@ -143,20 +143,6 @@ get '/septa/elevator/outages' do
   return getElevatorOutagesFromSeptaJson();
 end
 
-def getElevatorOutagesFromSeptaRss()
-  feed = Feedzirra::Feed.fetch_and_parse("http://www2.septa.org/rss/elevators/index.xml")
-  outages = {}
-  feed.entries.each do | entry |
-    if (entry.title.include?("No Elevator Outages")) 
-      outages["elevators_ok"] = "There are no reported elevator outages"
-    else 
-      stationName = entry.title.gsub(/\s+/m, ' ').strip.split(" ")[2];
-      outages[stationName] = entry.summary
-    end
-  end
-  return outages;
-end
-
 
 # sample response from SEPTA {"meta":{"elevators_out":1,"updated":"2013-09-26 13:31:57"},"results":[{"line":"Norristown High Speed Line","station":"Norristown Transportation Center","elevator":"Street Level","message":"No access to\/from station","alternate_url":"http:\/\/www.septa.org\/access\/alternate\/nhsl.html#ntc"}]}
 def getElevatorOutagesFromSeptaJson()
