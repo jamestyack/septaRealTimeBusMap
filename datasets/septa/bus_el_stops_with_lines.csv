@@ -1,4 +1,4 @@
-_id,stop_name,stop_lat,stop_lon,location_type,parent_station,zone_id,wheelchair_boarding,MFL,BSS,access_notes
+_id,stop_name,stop_lat,stop_lon,location_type,parent_station,zone_id,wheelchair_boarding,MFL,BSS,NHSL
 2,Ridge Av & Lincoln Dr  ,40.014986,-75.206826,,31032,1,0,,,
 4,Roosevelt Blvd & Broad St - FS,40.018128,-75.148887,,,1,,,,
 5,Roosevelt Blvd & 5th St,40.023465,-75.133487,,,1,,,,
@@ -44,9 +44,8 @@ _id,stop_name,stop_lat,stop_lon,location_type,parent_station,zone_id,wheelchair_
 55,33rd St & Cecil B Moore Av Loop,39.982394,-75.188946,,,1,,,,
 57,Cecil B Moore Av & 20th St ,39.979853,-75.167513,,,1,,,,
 58,Cecil B Moore Av & Broad St ,39.978618,-75.157972,,,1,,,,
-60,Allegheny Station,39.996444,-75.113345,,,1,1,1,,"The street level elevator provides access for east or westbound travel. If this elevator is out of service, you CANNOT enter or exit the station.
-To Enter the System: Route 3 bus towards 33rd & Cecil B. Moore. Enter at Somerset for westbound El service towards 69th Street. - or - Take the Route 3 bus towards Frankford Transportation Center. Enter at Tioga for eastbound El service towards Frankford."
-61,Frankford Transportation Center,40.023427,-75.077197,,,1,1,1,,To enter or exit the station if the Bridge Street elevator is out of service: Use the Pratt Street elevator.<br />To enter or exit the station if the Pratt Street elevator is out of service: Use the Bridge Street elevator.
+60,Allegheny Station,39.996444,-75.113345,,,1,1,1,,
+61,Frankford Transportation Center,40.023427,-75.077197,,,1,1,1,,
 64,Frankford Av & Torresdale Av,40.006135,-75.09183,,,1,,,,
 65,Frankford Av & Lehigh Av ,39.987096,-75.122378,,,1,,,,
 67,2nd St & Green St,39.961017,-75.141445,,,1,,,,
@@ -248,7 +247,7 @@ To Enter the System: Route 3 bus towards 33rd & Cecil B. Moore. Enter at Som
 413,Academy Rd & Chalfont Dr,40.084318,-74.989976,,,1,,,,
 414,Keswick Rd & Morrell Av,40.074783,-74.989265,,,1,,,,
 415,Academy Rd & Grant Av - FS,40.069169,-75.007622,,,1,,,,
-416,69th St Transportation Center MFL East,39.96232,-75.258555,,31034,1,1,1,,
+416,69th St Transportation Center MFL East,39.96232,-75.258555,,31034,1,1,1,,1
 419,Chestnut St & 60th St,39.960388,-75.241198,,,1,0,,,
 420,Chestnut St & 52nd St,39.958424,-75.225307,,,1,,,,
 421,Chestnut St & 40th St,39.955582,-75.202369,,,1,,,,
@@ -898,26 +897,26 @@ To Enter the System: Route 3 bus towards 33rd & Cecil B. Moore. Enter at Som
 1877,Marshall Ln & Winks Ln - 2,40.085559,-74.921513,,,1,,,,
 1882,Winks Ln & Marshall Ln,40.085648,-74.921264,,,1,,,,
 1884,Station Av at Cornwells Heights Station,40.072343,-74.951688,,,1,,,,
-1892,Bridgeport Station,40.104964,-75.348141,,,2,0,,,
-1895,Gulph Mills Station,40.070838,-75.342325,,31031,2,1,,,
-1900,Stadium Station ,40.032681,-75.340776,,,2,,,,
-1902,Roberts Rd Station ,40.021383,-75.33027,,,2,,,,
-1908,Beechwood Brookline Station,39.986521,-75.291495,,,2,,,,
-1917,Parkview Station,39.968982,-75.274804,,,2,,,,
-1918,Township Line Rd Station,39.974791,-75.281572,,,2,,,,
-1919,Penfield Station Manoa Rd,39.981015,-75.283992,,,2,,,,
-1921,Wynnewood Rd Station,39.993382,-75.298229,,,2,1,,,
-1923,Ardmore Av Station,39.999918,-75.309467,,,2,,,,
-1924,Haverford Station      ,40.009821,-75.315158,,,2,,,,
-1925,Bryn Mawr Station           ,40.018075,-75.323419,,,2,,,,
-1927,Garrett Hill Station,40.027957,-75.336396,,,2,,,,
-1929,Villanova Station      ,40.034049,-75.344037,,,2,,,,
-1930,Radnor Station,40.042061,-75.353617,,,2,,,,
-1931,County Line Station,40.050108,-75.347376,,,2,,,,
-1932,Matsonford Station,40.058215,-75.339455,,,2,,,,
+1892,Bridgeport Station,40.104964,-75.348141,,,2,0,,,1
+1895,Gulph Mills Station,40.070838,-75.342325,,31031,2,1,,,1
+1900,Stadium Station ,40.032681,-75.340776,,,2,,,,1
+1902,Roberts Rd Station ,40.021383,-75.33027,,,2,,,,1
+1908,Beechwood Brookline Station,39.986521,-75.291495,,,2,,,,1
+1917,Parkview Station,39.968982,-75.274804,,,2,,,,1
+1918,Township Line Rd Station,39.974791,-75.281572,,,2,,,,1
+1919,Penfield Station Manoa Rd,39.981015,-75.283992,,,2,,,,1
+1921,Wynnewood Rd Station,39.993382,-75.298229,,,2,1,,,1
+1923,Ardmore Av Station,39.999918,-75.309467,,,2,,,,1
+1924,Haverford Station      ,40.009821,-75.315158,,,2,,,,1
+1925,Bryn Mawr Station           ,40.018075,-75.323419,,,2,,,,1
+1927,Garrett Hill Station,40.027957,-75.336396,,,2,,,,1
+1929,Villanova Station      ,40.034049,-75.344037,,,2,,,,1
+1930,Radnor Station,40.042061,-75.353617,,,2,,,,1
+1931,County Line Station,40.050108,-75.347376,,,2,,,,1
+1932,Matsonford Station,40.058215,-75.339455,,,2,,,,1
 1933,Gulph Mills Station,40.070998,-75.342219,,,2,0,,,
-1934,Hughes Park Station,40.081392,-75.34902,,,2,,,,
-1935,DeKalb St Station,40.098736,-75.352065,,,2,0,,,
+1934,Hughes Park Station,40.081392,-75.34902,,,2,,,,1
+1935,DeKalb St Station,40.098736,-75.352065,,,2,0,,,1
 1938,Avon Rd Station,39.957623,-75.269455,,,1,,,,
 1939,Lansdowne Av Station,39.951704,-75.282564,,,1,,,,
 1940,Drexel Hill Jct Station,39.947101,-75.292823,,,1,,,,
@@ -1076,15 +1075,14 @@ To Enter the System: Route 3 bus towards 33rd & Cecil B. Moore. Enter at Som
 2448,60th St Station,39.961991,-75.240757,,,1,1,1,,
 2449,56th St Station,39.961007,-75.232847,,,1,1,1,,
 2450,52nd St Station,39.960012,-75.224889,,,1,1,1,,
-2451,46th St Station,39.958646,-75.213922,,,1,1,1,,"The eastbound elevator provides street access, access for eastbound travel and access to the westbound elevator. If this elevator is out of service, you CANNOT enter or exit the station. The westbound elevator only provides cross over access to the eastbound side."
+2451,46th St Station,39.958646,-75.213922,,,1,1,1,,
 2452,40th St Station,39.957161,-75.202034,,,1,,1,,
 2453,34th St Station,39.955848,-75.191504,,,1,,1,,
 2455,13th St Station,39.952021,-75.161462,,,1,1,1,,
 2456,11th St Station,39.951648,-75.158346,,,1,,1,,
 2457,8th St Station,39.951066,-75.153519,,,1,1,1,,
-2458,5th St Station,39.950485,-75.148892,,,1,1,1,,"An elevator is available for each direction of travel and provides access to the street and platform level.
-To Enter the System: If the westbound platform elevator is out of service: Enter from the eastbound (towards Frankford) entrance. Ride eastbound towards Frankford to Spring Garden. Cross to the westbound side of the platform for westbound El service towards 69th Street."
-2459,Spring Garden Station,39.960399,-75.140408,,,1,,1,,Escalator serves East platform only for passengers entering the station
+2458,5th St Station,39.950485,-75.148892,,,1,1,1,,
+2459,Spring Garden Station,39.960399,-75.140408,,,1,,1,,
 2460,Berks Station,39.978679,-75.133542,,,1,1,1,,
 2461,York Dauphin Station,39.986191,-75.132011,,,1,1,1,,
 2462,Huntingdon Station,39.988759,-75.127463,,,1,1,1,,
@@ -6704,7 +6702,7 @@ To Enter the System: If the westbound platform elevator is out of service: E
 21529,Market St & Schuylkill Av,39.954552,-75.181375,,,7,,,,
 21530,Old York Rd & 66th Av ,40.05375,-75.141805,,,1,,,,
 21531,8th St & Market St,39.951129,-75.153506,,,1,1,,1,
-21532,30th St Station,39.95477,-75.183264,,,1,1,1,,"One elevator provides access from the street to the fare line. Another elevator provides access from the fare line to the train platform for east or westbound travel. If either elevator is out of service, you CANNOT enter or exit the station."
+21532,30th St Station,39.95477,-75.183264,,,1,1,1,,
 21534,11th St & Nedro Av - FS,40.041474,-75.139306,,,1,,,,
 21536,Market St & 24th St - MBFS,39.954405,-75.17938,,,7,,,,
 21537,33rd St & Arch St,39.957494,-75.189042,,,1,,,,
@@ -12562,8 +12560,8 @@ To Enter the System: If the westbound platform elevator is out of service: E
 30515,69th St Blvd & Sansom St,39.95784,-75.258223,,,1,,,,
 30516,69th St Blvd & Marshall Rd - FS,39.953574,-75.258363,,,1,,,,
 30517,Main St & Concord Rd - FS,39.925196,-75.267485,,,1,,,,
-30519,Ardmore Junction Station,39.996262,-75.303695,,,2,,,,
-30520,Norristown Transportation Center,40.113468,-75.345161,,31038,2,1,,,
+30519,Ardmore Junction Station,39.996262,-75.303695,,,2,,,,1
+30520,Norristown Transportation Center,40.113468,-75.345161,,31038,2,1,,,1
 30521,Providence Rd & Jackson St,39.926641,-75.385967,,,1,,,,
 30527,Radnor St & Jefferson St,39.914557,-75.384558,,,1,,,,
 30528,Radnor St & Baltimore Pk,39.915993,-75.384214,,,1,,,,

@@ -140,7 +140,7 @@ end
 
 get '/septa/elevator/outages' do
   content_type :json
-  return getElevatorOutagesFromSeptaRss().to_json;
+  return getElevatorOutagesFromSeptaJson();
 end
 
 def getElevatorOutagesFromSeptaRss()
@@ -157,12 +157,21 @@ def getElevatorOutagesFromSeptaRss()
   return outages;
 end
 
+
+# sample response from SEPTA {"meta":{"elevators_out":1,"updated":"2013-09-26 13:31:57"},"results":[{"line":"Norristown High Speed Line","station":"Norristown Transportation Center","elevator":"Street Level","message":"No access to\/from station","alternate_url":"http:\/\/www.septa.org\/access\/alternate\/nhsl.html#ntc"}]}
+def getElevatorOutagesFromSeptaJson()
+  uri = "http://www3.septa.org/hackathon/elevator/"
+  response = RestClient.get uri
+  return response;
+end
+
+
 get '/septa/stations/line/:line' do
   content_type :json
-  outages = getElevatorOutagesFromSeptaRss();
+  outages = JSON.parse(getElevatorOutagesFromSeptaJson());
   stationsCol = settings.mongo_db['septa_stations']
-  if (params[:line] == "MFLBSS")
-    result = stationsCol.find({:$or => [{:MFL => "1"}, {:BSS => "1"}] })
+  if (params[:line] == "ALL")
+    result = stationsCol.find({:$or => [{:MFL => "1"}, {:BSS => "1"}, {:NHSL => "1"}] })
   else
     result = stationsCol.find({params[:line] => "1"})
   end
@@ -170,10 +179,10 @@ get '/septa/stations/line/:line' do
   doc["line"] = "#{params[:line]}"
   doc["stations"]=result.to_a
   doc["stations"].each_with_index do | station, i |
-    outages.each do | stationName, outageDesc |
+    outages["results"].each do | outage |
     # have to remove hypens due to naming inconsistency
-      if station["stop_name"].gsub(/-/, ' ').include?(stationName.gsub(/-/, ' '))
-        doc["stations"][i]["elevatorOutage"] = outageDesc;
+      if station["stop_name"].gsub(/-/, ' ').include?(outage["station"].gsub(/-/, ' '))
+        doc["stations"][i]["elevatorOutage"] = outage;
       end
     end
   end

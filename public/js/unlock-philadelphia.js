@@ -12,9 +12,9 @@ var twitterCode = "<a href='https://twitter.com/intent/tweet?screen_name=septa' 
 
 
 var mapPosition = {};
-mapPosition["Fairmount"] = {
-	"coords" : [39.966959, -75.160391],
-	"zoom" : 13
+mapPosition["Erie"] = {
+	"coords" : [40.009172, -75.151226],
+	"zoom" : 11
 };
 
 var cloudmadeLayer = L.tileLayer(cloudmadeUrl, {
@@ -22,8 +22,8 @@ var cloudmadeLayer = L.tileLayer(cloudmadeUrl, {
 });
 
 var map = L.map('map', {
-	center : mapPosition["Fairmount"].coords,
-	zoom : mapPosition["Fairmount"].zoom,
+	center : mapPosition["Erie"].coords,
+	zoom : mapPosition["Erie"].zoom,
 	layers : [cloudmadeLayer]
 });
 
@@ -119,7 +119,7 @@ function addLayersAndShow(stationData, line) {
 				stations[getAccessType(station)].push(circle);
 			})();
 		}
-		info.update(getLineName(line) + ' stations');
+		info.update(getLineName(line));
 		legend.update('severity');
 	
 
@@ -158,8 +158,8 @@ function getLineName(line) {
 		return "Market-Frankford Line"
 	} else if (line == "BSS") {
 		return "Broad Street Line"
-	} else if (line == "MFLBSS") {
-		return "Market-Frankford/Broad Street Line"
+	} else if (line == "ALL") {
+		return "Subway and High Speed Line Stations"
 	} else {
 		console.error(line + " unknown")
 		return "";
@@ -213,7 +213,13 @@ function showStations() {
 function formatStation(station) {
 	var response = "<h5>" + station.stop_name + " " + getLine(station) + "</h5>";
 	if (station.elevatorOutage) {
-		response += "<p class='text-danger'><strong>ELEVATOR OUTAGE</strong></br>" + station.elevatorOutage + "</p>"
+		response += "<p class='text-danger'><strong>ELEVATOR OUTAGE<br/>" 
+			+ station.elevatorOutage.message + "</strong><br/>"
+			+ "Line: " + station.elevatorOutage.line + "<br/>"
+			+ "Elevator: " + station.elevatorOutage.elevator + "<br/>"
+			+ station.elevatorOutage.message + "<br/>"
+			+ "See : <a target= '_blank' href='" + station.elevatorOutage.alternate_url + "'>" + "SEPTA advice" + "</a>"  
+			+ "</p>"
 	} else {
 		response += "Station is " + (station.wheelchair_boarding ? "" : " not") + " wheelchair accessible<br />";
 	}
@@ -227,6 +233,9 @@ function getLine(station) {
 	}
 	if (station.BSS == 1) {
 		response += (response=="(" ? "" : "/") + "BSS";
+	}
+	if (station.NHSL == 1) {
+		response += (response=="(" ? "" : "/") + "NHSL";
 	}
 	return response + ")";
 }
@@ -244,8 +253,12 @@ function addInfoBox() {
 	info.update = function(title) {
 		this._div.innerHTML = '<h4>' + ( title ? title : 'Loading data') + '</h4><div id="stationOutageMessage"></div>';
 		$.getJSON("/septa/elevator/outages", function(data) {
-			if (data.elevators_ok) {
+			if (data.meta.elevators_out==0) {
 				$('#stationOutageMessage').html(data.elevators_ok);
+			} else {
+				var outages = data.meta.elevators_out;
+				$('#stationOutageMessage').html("<p class='text-danger'><img height='20' width='20' src='images/alert.gif'/> " +
+					"<strong>" + outages + " station elevator " + (outages > 1 ? "outages have" : "outage has") + " been <a target='_blank' href='http://www2.septa.org/elevators/'>reported</a></strong></p>Click icon on map for details and advice");
 			}
 		});
 	
