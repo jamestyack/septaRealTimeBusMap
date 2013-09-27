@@ -254,7 +254,7 @@ function addInfoBox() {
 		this._div.innerHTML = '<h4>' + ( title ? title : 'Loading data') + '</h4><div id="stationOutageMessage"></div>';
 		$.getJSON("/septa/elevator/outages", function(data) {
 			if (data.meta.elevators_out==0) {
-				$('#stationOutageMessage').html(data.elevators_ok);
+				$('#stationOutageMessage').html("No reported elevator outages");
 			} else {
 				var outages = data.meta.elevators_out;
 				$('#stationOutageMessage').html("<p class='text-danger'><img height='20' width='20' src='images/alert.gif'/> " +
