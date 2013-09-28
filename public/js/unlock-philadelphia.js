@@ -258,7 +258,7 @@ function addInfoBox() {
 			} else {
 				var outages = data.meta.elevators_out;
 				$('#stationOutageMessage').html("<p class='text-danger'><img height='20' width='20' src='images/alert.gif'/> " +
-					"<strong>" + outages + " station elevator " + (outages > 1 ? "outages have" : "outage has") + " been <a target='_blank' href='http://www2.septa.org/elevators/'>reported</a></strong></p>Click icon on map for details and advice");
+					"<strong>" + outages + " station elevator " + (outages > 1 ? "outages have" : "outage has") + " been <a target='_blank' href='http://www2.septa.org/elevators/'>reported</a></strong></p>");
 			}
 		});
 	
