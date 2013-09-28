@@ -258,13 +258,22 @@ function addInfoBox() {
 			} else {
 				var outages = data.meta.elevators_out;
 				$('#stationOutageMessage').html("<p class='text-danger'><img height='20' width='20' src='images/alert.gif'/> " +
-					"<strong>" + outages + " station elevator " + (outages > 1 ? "outages have" : "outage has") + " been <a target='_blank' href='http://www2.septa.org/elevators/'>reported</a></strong></p>");
+					"<strong>" + outages + " elevator " + (outages > 1 ? "outages have" : "outage has") + " been <a target='_blank' href='http://www2.septa.org/elevators/'>reported</a></strong></p>" + getElevatorOutageStations(data));
 			}
 		});
 	
 		
 	};
 	info.addTo(map);
+}
+
+function getElevatorOutageStations(data) {
+	var stringToReturn = "<ul>";
+	for (var i=0; i < data.results.length; i++) {
+		outage = data.results[i];
+		stringToReturn += "<li>" + outage.elevator + " (access to " + outage.line + ") see <a target='_blank' href='http://www2.septa.org/elevators/'>info/advice</a>";
+	}
+	return stringToReturn;
 }
 
 function addLegend() {
