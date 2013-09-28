@@ -31,7 +31,7 @@ end
 
 # standard redirect to the bus explorer
 get '/' do
-  redirect '/phillybusexplorer'
+  redirect '/unlockphiladelphia'
 end
 
 # -------- Philly Bus Explorer ----------
