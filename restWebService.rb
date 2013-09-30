@@ -166,8 +166,10 @@ get '/septa/stations/line/:line' do
   doc["stations"]=result.to_a
   doc["stations"].each_with_index do | station, i |
     outages["results"].each do | outage |
-    # have to remove hypens due to naming inconsistency
-      if station["stop_name"].gsub(/-/, ' ').include?(outage["station"].gsub(/-/, ' '))
+      puts "comparing outage " + outage["station"].gsub(/-/, ' ').gsub(/Street/, 'St') + " with " + station["stop_name"].gsub(/-/, ' ').gsub(/Street/, 'St')
+      # have to remove hypens due to naming inconsistency and also abbreviate Street to St
+      if station["stop_name"].gsub(/-/, ' ').gsub(/Street/, 'St').include?(outage["station"].gsub(/-/, ' ').gsub(/Street/, 'St'))
+        puts "found match!"
         doc["stations"][i]["elevatorOutage"] = outage;
       end
     end
