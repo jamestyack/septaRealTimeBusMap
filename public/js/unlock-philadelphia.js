@@ -271,7 +271,7 @@ function getElevatorOutageStations(data) {
 	var stringToReturn = "<ul>";
 	for (var i=0; i < data.results.length; i++) {
 		outage = data.results[i];
-		stringToReturn += "<li>" + outage.elevator + " (access to " + outage.line + ") see <a target='_blank' href='http://www2.septa.org/elevators/'>info/advice</a>";
+		stringToReturn += "<li>" + outage.station + " (access to " + outage.line + ") see <a target='_blank' href='http://www2.septa.org/elevators/'>info/advice</a>";
 	}
 	return stringToReturn;
 }
