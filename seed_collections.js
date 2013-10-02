@@ -2,7 +2,7 @@ var zones = [];
 
 var zone = new Object();
 zone._id = "CCNS";
-zone.name = "Center City - Routes North < - > South";
+zone.name = "Center City - Routes N <-> S";
 zone.buses = ["1", "2", "3", "4", "17", "23", "47M"];
 zones.push(zone);
 zone = new Object();
@@ -12,7 +12,7 @@ zone.buses = ["3", "78"];
 zones.push(zone);
 zone = new Object();
 zone._id = "CCW";
-zone.name = "Center City - Routes West / NorthWest";
+zone.name = "Center City - Routes W / NW";
 zone.buses = ["1", "10", "21", "42", "27", "32", "34", "36", "61"];
 zones.push(zone);
 zone = new Object();
@@ -29,12 +29,12 @@ zones.push(zone);
 
 zone = new Object();
 zone._id = "OCNS";
-zone.name = "Old City/Society Hill - Routes North < - > South";
+zone.name = "Old City/Society Hill - Routes N <-> S";
 zone.buses = ["5", "25", "33", "17", "47", "48", "57"];
 zones.push(zone);
 zone = new Object();
 zone._id = "OCW";
-zone.name = "Old City/Society Hill - Routes West / NorthWest";
+zone.name = "Old City/Society Hill - Routes W / NW";
 zone.buses = ["9", "12", "21", "42", "38", "44"];
 zones.push(zone);
 
@@ -51,13 +51,13 @@ zones.push(zone);
 
 zone = new Object();
 zone._id = "West";
-zone.name = "West Philly (University City)";
+zone.name = "West Philly (Univ City)";
 zone.buses = ["11", "13", "21", "30", "31", "35", "36", "38", "40", "42", "43", "46", "52", "64"];
 zones.push(zone);
 
 zone = new Object();
 zone._id = "NW";
-zone.name = "North-West Philadelphia (Art Museum, Fairmount Park, Manayunk)";
+zone.name = "North-West Philadelphia";
 zone.buses = ["9", "27", "35", "38", "43", "44", "61", "62", "65"];
 zones.push(zone);
 

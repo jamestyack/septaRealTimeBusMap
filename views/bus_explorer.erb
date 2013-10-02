@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Philly Bus Explorer - View SEPTA bus routes and positions by neighborhood</title>
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<!-- Bootstrap -->
+		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-theme.min.css">
+		<link href="css/unlock-philadelphia.css" rel="stylesheet" />
+		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+		<!--[if lt IE 9]>
+		<script src="js/html5shiv.js"></script>
+		<script src="js/respond.min.js"></script>
+		<![endif]-->
+		<link rel="stylesheet" href="css/leaflet-0.7-dev.css" />
+		<link rel="stylesheet" href="css/leaflet.label.css" />
+		<link rel="stylesheet" type="text/css" href="css/bus_explorer.css" />
+		<!--[if lte IE 8]>
+		<link rel="stylesheet" href="css/leaflet.ie.css" />
+		<![endif]-->
+
+	</head>
+	<body>
+		<div id="wrap">
+			<div class="navbar navbar-default navbar-fixed-top">
+				<div class="container">
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+						<a class="navbrand-img" href=""><img src="images/unlock_logosm.jpg" width="140" height="42" alt="Unlock_Philly logo" title="Unlock Philly Logo"></a>
+					</div>
+					<ul class="nav navbar-nav">
+						<!--<li class="active">
+						<a href="http://www.tyack.net">Blog</a>
+						</li>-->
+						<li>
+							<a href="/unlockphiladelphia">Accessible stations and services</a>
+						</li>
+						<li class="active">
+							<a href="/busexplorer">Explore Buses by Neighborhood</a>
+						</li>
+						<li>
+							<a href="#">Trip Planner - Coming soon</a>
+						</li>
+						<li>
+							<a href="#contact">Contact</a>
+						</li>
+						<!--<li>
+						<a href="#contact">Contact</a>
+						</li>-->
+						<li>
+							<!--<a class="navimg" target='_blank' href='http://www.septa.org/access/'><img src="images/sept_logosm.png" width="40" height="21" alt="Septa logo linking to Accessible SEPTA website" title="septa logo"></a>-->
+						</li>
+					</ul>
+				</div>
+			</div>
+
+			<!-- Begin page content -->
+			<div class="container">
+				<div class="row spacer">
+					<div class="col-md-3">
+						<div class="btn-group" data-toggle="buttons" id="lineRadios">
+							<!-- <label class="btn btn-default btn-sm">
+								<input type="radio" name="line" id="lineMFL" value="MFL">
+								Market-Frankford </label>
+							<label class="btn btn-default btn-sm">
+								<input type="radio" name="line" id="lineBSS" value="BSS">
+								Broad St </label> -->
+							<label class="btn btn-default btn-sm active">
+								<input type="radio" name="line" id="lineBSS" value="ALL">
+								Exploring Bus Routes by Neighborhood </label>
+						</div>
+						<div class="panel panel-default spacer">
+							<div class="panel-body">
+								View routes that pass through
+								<select>
+									<% zones.each do | zone | %><option value="<%= zone['_id'] %>"><%= zone['name'] %></>
+									<% end %>
+								</select>
+							</div>
+						</div>
+						<div class="input-group spacer">
+							<span class="input-group-btn">
+								<button class="btn btn-sm" type="button">
+									Find location
+								</button> </span>
+							<input type="text" class="form-control input-sm">
+						</div>
+						<div class="panel panel-default spacer">
+							<div class="panel-body">
+								Raise accessibility awareness
+								<a href="https://twitter.com/intent/tweet?screen_name=septa_social&text=%23accessibility" class="twitter-mention-button spacer-small">Tweet to @septa</a>
+								<script>
+									! function(d, s, id) {
+										var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https';
+										if (!d.getElementById(id)) {
+											js = d.createElement(s);
+											js.id = id;
+											js.src = p + '://platform.twitter.com/widgets.js';
+											fjs.parentNode.insertBefore(js, fjs);
+										}
+									}(document, 'script', 'twitter-wjs');
+								</script>
+							</div>
+						</div>
+						<div class="panel panel-default spacer">
+							<div class="panel-body">
+								<small> Links
+									<ul>
+										<li>
+											<a href="http://www.septa.org/access/" target='_blank'>Accessible SEPTA</a>
+										</li>
+										<li>
+											<a href='http://www2.septa.org/elevators/' target='_blank'>Elevator Outages SEPTA</a>
+										</li>
+										<li>
+											<a href="http://www.libertyresources.org" target='_blank'>Liberty Resources - The Philadelphia Center for Independent Living</a>
+										</li>
+										<li>
+											<a href="http://www.septa.org/access/vis-impaired.html" target='_blank'>SEPTA Assistance for Blind & Visually Impaired Customers</a>
+										</li>
+									</ul></small>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-9">
+						
+						<div id="mapcontainer">MAP</div>
+						
+					</div><!-- end of upper right column -->
+				</div><!-- end of top content row containing filters and ma -->
+				<a name="contact"></a>
+				<div class="well spacer">
+					<h4>Please join us at <a target='_blonk' href='http://codeforphilly.org/projects/Unlock_Philadelphia'>Code For Philly</a> to get involved and help improve this app!</h4>
+					Leave comments and suggestions for this app below. This is a prototype and was developed by a small project team at the Transit Apps for Philly Hackathon using data from various <a href="http://www.septa.com">SEPTA APIS</a>.
+				</div>
+				<div id="disqus_thread"></div>
+				<script type="text/javascript">
+					/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+					var disqus_shortname = 'tyackherokuapps';
+					// required: replace example with your forum shortname
+					/* * * DON'T EDIT BELOW THIS LINE * * */
+					(function() {
+						var dsq = document.createElement('script');
+						dsq.type = 'text/javascript';
+						dsq.async = true;
+						dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+						(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+					})();
+				</script>
+				<noscript>
+					Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+				</noscript>
+				<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+			</div>
+		</div>
+		<!-- Placed at the end of the document so the pages load faster -->
+		<script src="js/jquery-1.10.2.min.js"></script>
+		<!-- Latest compiled and minified JavaScript -->
+		<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+		<!--<script src="js/leaflet-0.7-dev.js"></script> -->
+		<!--<script src="js/leaflet.label.js"></script> -->
+		<script src="js/KML.js"></script>
+		
+		<!-- google maps -->
+		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=true"></script>
+		<script type="text/javascript" src="js/markerAnimate.js"></script>
+		<script type="text/javascript" src="js/markerwithlabel.js"></script>
+		<script type="text/javascript" src="js/explorer.js"></script>
+		
+		<!-- google analytics -->
+		<script type="text/javascript">
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-32865952-2']);
+			_gaq.push(['_trackPageview']);
+			(function() {
+				var ga = document.createElement('script');
+				ga.type = 'text/javascript';
+				ga.async = true;
+				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+				var s = document.getElementsByTagName('script')[0];
+				s.parentNode.insertBefore(ga, s);
+			})();
+		</script>
+	</body>
+</html>

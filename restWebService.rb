@@ -57,6 +57,14 @@ get '/phillybusexplorer' do
   erb :philly_bus_explorer, :locals => {:zones => zones}
 end
 
+# main page erb for the bus explorer
+get '/busexplorer' do
+  zonesCol = settings.mongo_db['Zones']
+  zones = zonesCol.find(nil,{:fields => {"_id" => 1, "name" => 1}}).to_a
+  puts(zones);
+  erb :bus_explorer, :locals => {:zones => zones}
+end
+
 # -------- Nottingham Traffic Accidents --------------
 
 # get accidents by year
