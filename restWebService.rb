@@ -51,10 +51,7 @@ end
 
 # main page erb for the bus explorer
 get '/phillybusexplorer' do
-  zonesCol = settings.mongo_db['Zones']
-  zones = zonesCol.find(nil,{:fields => {"_id" => 1, "name" => 1}}).to_a
-  puts(zones);
-  erb :philly_bus_explorer, :locals => {:zones => zones}
+  redirect '/busexplorer'
 end
 
 # main page erb for the bus explorer
