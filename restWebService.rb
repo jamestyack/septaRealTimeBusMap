@@ -49,6 +49,20 @@ get '/septa/zone/:zone/routes' do
   return result["buses"].to_json
 end
 
+get '/septa/bus/movements/history/count' do
+  content_type :json
+  bus_movements_col = settings.mongo_db['bus_movements']
+  count = bus_movements_col.count()
+  doc = {}
+  doc["result"] = count
+  return doc.to_json
+end
+
+get '/septa/bus/movements/history/:start/:totalresults' do
+  content_type :json
+  settings.mongo_db['bus_movements'].find().sort(:date_time).skip(params[:start].to_i).limit(params[:totalresults].to_i).to_a.to_json
+end
+
 # main page erb for the bus explorer
 get '/phillybusexplorer' do
   redirect '/busexplorer'
@@ -119,10 +133,14 @@ get '/bootstraplayouttest' do
   erb :bootstrap_layout_test
 end
 
-# for testing bootstrap layout
 get '/unlockphiladelphia' do
   erb :unlock_philadelphia
 end
+
+get '/busmovements' do
+  erb :bus_movements
+end
+
 
 # --- get from Wunderground
 # gets the first observation for the day that is equal to or greater than the passed time
