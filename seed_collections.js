@@ -24,7 +24,7 @@ zones.push(zone);
 zone = new Object();
 zone._id = "NLIB";
 zone.name = "Northern Liberties and Fishtown";
-zone.buses = ["5", "25", "57"]
+zone.buses = ["5", "25", "43", "57"]
 zones.push(zone);
 
 zone = new Object();

@@ -221,7 +221,7 @@ function formatStation(station) {
 			+ "See : <a target= '_blank' href='" + station.elevatorOutage.alternate_url + "'>" + "SEPTA advice" + "</a>"  
 			+ "</p>"
 	} else {
-		response += "Station is " + (station.wheelchair_boarding ? "" : " not") + " wheelchair accessible<br />";
+		response += "Station is " + (station.wheelchair_boarding == "1" ? "" : " not") + " wheelchair accessible<br />";
 	}
 	return response;
 }
