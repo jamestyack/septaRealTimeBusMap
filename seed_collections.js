@@ -64,7 +64,7 @@ zones.push(zone);
 zone = new Object();
 zone._id = "King";
 zone.name = "King of Prussia / Norristown";
-zone.buses = ["27", "90", "91", "92", "93", "94", "95", "96", "97", "98", "99"];
+zone.buses = ["27", "90", "91", "92", "93", "94", "95", "96", "97", "98", "99", "124", "125"];
 zones.push(zone);
 
 zone = new Object();
