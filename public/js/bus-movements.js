@@ -53,7 +53,7 @@ $(document).ready(function() {
 
 function getBusMovements() {
 	info.update();
-	return $.getJSON('/septa/bus/movements/history/1100/2000', function(data) {
+	return $.getJSON('/septa/bus/movements/history/1100/1000', function(data) {
 		busMovements[0] = data;
 	});
 }
