@@ -1,6 +1,7 @@
 var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/98021b22951d40df90bd5592641a4f37/44094/256/{z}/{x}/{y}.png';
 var cloudmadeAttribution = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>';
 var routeLayerGroups = {};
+var routes = [5, 9, 12, 17, 21, 25, 33, 38, 42, 44, 47, 48, 57];
 var routeColors = [];
 routeColors[5] = "#8DD3C7";
 routeColors[9] = "#FCCDE5";
@@ -15,6 +16,7 @@ routeColors[44] = "#4A1486";
 routeColors[47] = "#80B1D3";
 routeColors[48] = "#FDB462";
 routeColors[57] = "#B3DE69";
+var busRoutes = {};
 var info;
 var legend;
 var legendDiv;
@@ -40,6 +42,21 @@ $(document).ready(function() {
 
 	// ensures checkboxes reset in firefox
 	$(":checkbox").attr("autocomplete", "off");
+	
+	for (var i=0; i<routes.length; i++) {
+		busRoutes[routes[i]] = new L.KML("/kml/" + routes[i] + ".kml", {async: true});
+		map.addLayer(busRoutes[routes[i]]);
+	}
+	
+	//var bus_12 = new L.KML("/kml/12.kml", {async: true});
+	//var bus_17 = new L.KML("/kml/17.kml", {async: true});
+	//var bus_33 = new L.KML("/kml/33.kml", {async: true});
+	//var bus_48 = new L.KML("/kml/48.kml", {async: true});
+	
+	// map.addLayer(bus_12);
+	// map.addLayer(bus_17);
+	// map.addLayer(bus_33);
+	// map.addLayer(bus_48);
 
 	addLegend();
 	addInfoBox();
