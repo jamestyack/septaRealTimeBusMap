@@ -1,7 +1,7 @@
 Open Data Webapps
 ============
 
-This project contains a number of separate prototypes and visualizations related to Open Data sources and 'Civic Hacking' for Code For America.  Back end code is very lightweight Ruby (Sinatra) and mainly consists of REST endpoints to support the Ajax calls from the client-side web pages.
+This project contains a number of separate prototypes and visualizations related to Open Data sources and 'Civic Hacking'.  Back end code is very lightweight Ruby (Sinatra) and mainly consists of REST endpoints to support the Ajax calls from the client-side web pages.
 
 * restWebService.rb is the Ruby Sinatra file containing REST endpoints and redirections to erb templates containing the HTML views for the web pages
 
