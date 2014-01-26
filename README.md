@@ -10,7 +10,7 @@ Philly Bus Explorer
 
 A prototype that shows bus routes that pass through given neighborhood of Philadelphia along with locations of buses.
 
-/views/philly_bus_explorer.erb (and releated JS). 
+/views/philly_bus_explorer.erb (and releated JS)
 
 View it online at [Heroku](http://tyack.herokuapp.com/phillybusexplorer)
 
