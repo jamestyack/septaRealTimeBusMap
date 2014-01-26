@@ -17,7 +17,7 @@ View it online at [Heroku](http://tyack.herokuapp.com/phillybusexplorer)
 Nottingham Traffic Accidents
 ------------------------
 
-A visualisation of Nottingham (UK) Traffic Accident data.  Blog entry explaining data etc. at [tyack.net](http://tyack.net/wp/2013/09/16/mapping-open-traffic-accident-data/)
+A visualisation of Nottingham (UK) Traffic Accident data.  Blog entry explaining data etc. at [tyack.net](http://tyack.net/)
 
 /views/nottm_traffic_accidents.erb (and related JS - see HTML inside ERB for paths etc)
 
