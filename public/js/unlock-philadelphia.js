@@ -3,7 +3,7 @@ var cloudmadeAttribution = 'Map data &copy; <a href="http://openstreetmap.org">O
 var stationLayerGroups = {};
 var isFirstView = false;
 var accessTypes = ['Wheelchair', 'Escalator', 'StairsOnly'];
-var accessTypesLabels = ['Wheelchair Accessible with Elevator', 'Escalator/Stairs Only', 'Stairs Only'];
+var accessTypesLabels = ['Wheelchair Accessible', 'Escalator/Stairs Only', 'Stairs Only'];
 var accessTypeColors = {};
 accessTypeColors['Wheelchair'] = "#1ca92c";
 accessTypeColors['Escalator'] = "#ead103";
@@ -54,6 +54,7 @@ $(document).ready(function() {
 
 	addLegend();
 	addInfoBox();
+	addScaleBox();
 	populateStationLayerGroupsAndRefreshView(getSelectedLine());
 
 });
@@ -107,7 +108,7 @@ function addLayersAndShow(stationData, line) {
 					color : getAccessTypeColor(station),
 					opacity : .6,
 					fillOpacity : .4
-				})
+				});
 				circle.bindPopup(formatStation(station));
 				circle.bindLabel(station.stop_name).addTo(map);
 				circle.on('click', function(e) {
@@ -149,19 +150,19 @@ function createListOfResults(data) {
 		$('#popoverData').popover();
 	}
 	
-	return resultsHtml + "</ul><a href=''>More results and filters...</a></small>"
+	return resultsHtml + "</ul><a href=''>More results and filters...</a></small>";
 	
 }
 
 function getLineName(line) {
 	if (line == "MFL") {
-		return "Market-Frankford Line"
+		return "Market-Frankford Line";
 	} else if (line == "BSS") {
-		return "Broad Street Line"
+		return "Broad Street Line";
 	} else if (line == "ALL") {
-		return "Subway and High Speed Line Stations"
+		return "Subway and High Speed Line Stations";
 	} else {
-		console.error(line + " unknown")
+		console.error(line + " unknown");
 		return "";
 	}
 	
@@ -219,7 +220,7 @@ function formatStation(station) {
 			+ "Elevator: " + station.elevatorOutage.elevator + "<br/>"
 			+ station.elevatorOutage.message + "<br/>"
 			+ "See : <a target= '_blank' href='" + station.elevatorOutage.alternate_url + "'>" + "SEPTA advice" + "</a>"  
-			+ "</p>"
+			+ "</p>";
 	} else {
 		response += "Station is " + (station.wheelchair_boarding == "1" ? "" : " not") + " wheelchair accessible<br />";
 	}
@@ -258,20 +259,33 @@ function addInfoBox() {
 			} else {
 				var outages = data.meta.elevators_out;
 				$('#stationOutageMessage').html("<p class='text-danger'><img height='20' width='20' src='images/alert.gif'/> " +
-					"<strong>" + outages + " elevator " + (outages > 1 ? "outages have" : "outage has") + " been <a target='_blank' href='http://www2.septa.org/elevators/'>reported</a></strong></p>" + getElevatorOutageStations(data));
+					"<strong>" + outages + " elevator " + (outages > 1 ? "outages have" : "outage has") + " been reported.</strong> </p>" + getElevatorOutageStations(data));
 			}
 		});
 	
 		
 	};
 	info.addTo(map);
+	map.on('click', function(e){
+		info.removeFrom(map);	
+	});
+}
+
+/*
+ * Adding scale box on map
+ */
+function addScaleBox(){
+	scale = L.control.scale().addTo(map);
 }
 
 function getElevatorOutageStations(data) {
 	var stringToReturn = "<ul>";
 	for (var i=0; i < data.results.length; i++) {
 		outage = data.results[i];
-		stringToReturn += "<li>" + outage.station + " (access to " + outage.line + ") see <a target='_blank' href='http://www2.septa.org/elevators/'>info/advice</a>";
+		stringToReturn += "<li>" + outage.station + " (access to " + outage.line + ")";
+	}
+	if (data.results.length > 0){
+		stringToReturn += "</ul>Visit <a target='_blank' href='http://www2.septa.org/elevators/'>Septa website</a> for further info.";
 	}
 	return stringToReturn;
 }
