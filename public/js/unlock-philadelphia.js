@@ -1,5 +1,6 @@
-var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/98021b22951d40df90bd5592641a4f37/998/256/{z}/{x}/{y}.png';
-var cloudmadeAttribution = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>';
+var mapboxId = 'jamestyack.hl98j78k';
+var mapboxUrl = 'http://{s}.tiles.mapbox.com/v3/' + mapboxId + '/{z}/{x}/{y}.png';
+var mapboxAttribution = '<a target="_blank" href="https://www.mapbox.com/about/maps/">© Mapbox © OpenStreetMap</a> <a class="mapbox-improve-map" target="_blank" href="https://www.mapbox.com/map-feedback/#examples.map-9ijuk24y/8.538/47.365/15">Improve this map</a>';
 var stationLayerGroups = {};
 var isFirstView = false;
 var accessTypes = ['Wheelchair', 'Escalator', 'StairsOnly'];
@@ -12,19 +13,19 @@ var twitterCode = "<a href='https://twitter.com/intent/tweet?screen_name=septa' 
 
 
 var mapPosition = {};
-mapPosition["Erie"] = {
-	"coords" : [40.009172, -75.151226],
-	"zoom" : 11
+mapPosition["Fairmount"] = {
+	"coords" : [39.966959, -75.160391],
+	"zoom" : 13
 };
 
-var cloudmadeLayer = L.tileLayer(cloudmadeUrl, {
-	attribution : cloudmadeAttribution
+var mapboxLayer = L.tileLayer(mapboxUrl, {
+	attribution : mapboxAttribution
 });
 
 var map = L.map('map', {
-	center : mapPosition["Erie"].coords,
-	zoom : mapPosition["Erie"].zoom,
-	layers : [cloudmadeLayer]
+	center : mapPosition["Fairmount"].coords,
+	zoom : mapPosition["Fairmount"].zoom,
+	layers : [mapboxLayer]
 });
 
 $(document).ready(function() {
@@ -139,8 +140,8 @@ function updateYelpResults(station) {
 }
 
 function createListOfResults(data) {
-	var resultsHtml = "<small><ul>";
-	for (var i=0; i<data.businesses.length && i<10; i++) {
+	var resultsHtml = "<small>Remember to leave feedback on accessibility on Yelp to improve service and help others<br><ul>";
+	for (var i=0; i<data.businesses.length && i<30; i++) {
 		var business = data.businesses[i];
 		resultsHtml += "<li>";
 		resultsHtml += "<a target='_blank' href='" + business.url + "'>" + business.name + "</a> " + business.categories[0][0] +" (" +
@@ -150,7 +151,7 @@ function createListOfResults(data) {
 		$('#popoverData').popover();
 	}
 	
-	return resultsHtml + "</ul><a href=''>More results and filters...</a></small>";
+	return resultsHtml + "</ul></small>";
 	
 }
 
