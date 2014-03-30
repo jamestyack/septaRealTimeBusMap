@@ -208,7 +208,7 @@ get '/yelp/wheelchairaccess/:lat/:lng/:radius' do
   api_host = 'api.yelp.com'
   consumer = OAuth::Consumer.new(consumer_key, consumer_secret, {:site => "http://#{api_host}"})
   access_token = OAuth::AccessToken.new(consumer, token, token_secret)
-  path = "/v2/search?term=wheelchair+accessible&ll=#{params[:lat]},#{params[:lng]}&radius_filter=#{params[:radius]}"
+  path = "/v2/search?term=wheelchair+accessible&ll=#{params[:lat]},#{params[:lng]}&radius_filter=#{params[:radius]}&sort=1"
   access_token.get(path).body
 end
 
