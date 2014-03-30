@@ -100,7 +100,10 @@ function addLayersAndShow(stationData, line) {
 					marker.on('click', function(e) {
 						isFirstView = false;
 						var latlng = e.latlng;
-						map.panTo(new L.LatLng(latlng.lat, latlng.lng));
+						var zoom = Math.max(mapPosition["Fairmount"].zoom, map.getZoom());
+						map.setView(new L.LatLng(latlng.lat, latlng.lng), zoom, { 
+							animate: true,
+							});
 						updateYelpResults(station);
 					});
 					stations[getAccessType(station)].push(marker);
@@ -115,7 +118,10 @@ function addLayersAndShow(stationData, line) {
 				circle.on('click', function(e) {
 					isFirstView = false;
 					var latlng = e.latlng;
-					map.panTo(new L.LatLng(latlng.lat, latlng.lng));
+					var zoom = Math.max(mapPosition["Fairmount"].zoom, map.getZoom());
+					map.setView(new L.LatLng(latlng.lat, latlng.lng), zoom, {
+						animate: true,
+						});
 					updateYelpResults(station);
 				});
 				stations[getAccessType(station)].push(circle);
