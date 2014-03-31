@@ -139,18 +139,19 @@ function addLayersAndShow(stationData, line) {
 }
 
 function updateYelpResults(station) {
-	$.getJSON('/yelp/wheelchairaccess/' + station.stop_lat + "/" + station.stop_lon + "/1000", function(data) {
+	radiusInMetres = 1000;
+	$.getJSON('/yelp/wheelchairaccess/' + station.stop_lat + "/" + station.stop_lon + "/" + radiusInMetres, function(data) {
 		$('#yelp-heading').html("What's accessible near " + station.stop_name + "?");
 		$('#yelp-results').html(createListOfResults(data));
 	});
 }
 
 function createListOfResults(data) {
-	var resultsHtml = "<small>Remember to leave feedback on accessibility on Yelp to improve service and help others<br><ul>";
+	var resultsHtml = "<small>Please leave accessibility feedback on Yelp; most businesses take reviews seriously and information you add helps others.<br><ul>";
 	for (var i=0; i<data.businesses.length && i<30; i++) {
 		var business = data.businesses[i];
 		resultsHtml += "<li>";
-		resultsHtml += "<a target='_blank' href='" + business.url + "'>" + business.name + "</a> " + business.categories[0][0] +" (" +
+		resultsHtml += "<a target='_blank' href='" + business.url + "'>" + business.name + "</a> <strong>" + business.categories[0][0] +"</strong> (" +
 			 Math.round(business.distance) + " metres from station), " + business.location.display_address[0] + " " + business.display_phone +
 			 " <img title='" + business.snippet_text + "' src='" + business.rating_img_url + "'/></a> (" + business.review_count + " votes) ";
 		resultsHtml += "</li>";
