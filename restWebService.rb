@@ -162,8 +162,13 @@ get '/weather/:lat/:lng/:date/:time' do
 end
 
 get '/septa/elevator/outages' do
-  content_type :json
-  return getElevatorOutagesFromSeptaJson();
+  begin
+    return JSON.parse(getElevatorOutagesFromSeptaJson())
+  rescue JSON::ParserError => e
+    error = {}
+    error['errorMessage'] = "Septa elevator outage information out of service";
+    return error.to_json
+  end
 end
 
 
@@ -177,7 +182,12 @@ end
 
 get '/septa/stations/line/:line' do
   content_type :json
-  outages = JSON.parse(getElevatorOutagesFromSeptaJson());
+  outages = {}
+  begin
+    outages = JSON.parse(getElevatorOutagesFromSeptaJson())
+  rescue JSON::ParserError => e
+    outages["results"] = []
+  end
   stationsCol = settings.mongo_db['septa_stations']
   if (params[:line] == "ALL")
     result = stationsCol.find({:$or => [{:MFL => "1"}, {:BSS => "1"}, {:NHSL => "1"}] })
