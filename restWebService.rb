@@ -134,7 +134,7 @@ get '/bootstraplayouttest' do
 end
 
 get '/unlockphiladelphia' do
-  erb :unlock_philadelphia
+  redirect 'http://unlockphilly.com'
 end
 
 get '/busmovements' do
