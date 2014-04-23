@@ -1,4 +1,9 @@
-var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/98021b22951d40df90bd5592641a4f37/998/256/{z}/{x}/{y}.png';
+var mapboxId = 'jamestyack.i2bknm85';
+var mapboxUrl = 'http://{s}.tiles.mapbox.com/v3/' + mapboxId + '/{z}/{x}/{y}.png';
+var mapboxAttribution = '<a target="_blank" href="https://www.mapbox.com/about/maps/">© Mapbox © OpenStreetMap</a> <a class="mapbox-improve-map" target="_blank" href="https://www.mapbox.com/map-feedback/#examples.map-9ijuk24y/8.538/47.365/15">Improve this map</a>';
+
+
+//var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/98021b22951d40df90bd5592641a4f37/998/256/{z}/{x}/{y}.png';
 var cloudmadeAttribution = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>';
 var accidentLayerGroups = {};
 var timeOfDayCats = ['NIGHT', 'EARLY_MORNING', 'AM_PEAK', 'AM_OFF_PEAK', 'PM_OFF_PEAK', 'PM_PEAK', 'EARLY_EVENING', 'LATE_EVENING'];
@@ -47,14 +52,14 @@ mapPosition["Worksop"] = {
 	"zoom" : 12
 };
 
-var cloudmadeLayer = L.tileLayer(cloudmadeUrl, {
-	attribution : cloudmadeAttribution
+var mapboxLayer = L.tileLayer(mapboxUrl, {
+	attribution : mapboxAttribution
 });
 
 var map = L.map('map', {
 	center : mapPosition["County"].coords,
 	zoom : mapPosition["County"].zoom,
-	layers : [cloudmadeLayer]
+	layers : [mapboxLayer]
 });
 
 $(document).ready(function() {
