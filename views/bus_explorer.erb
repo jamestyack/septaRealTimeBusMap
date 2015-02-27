@@ -31,17 +31,14 @@
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 						</button>
-						<a class="navbrand-img" href=""><img src="images/unlock_logosm.jpg" width="140" height="42" alt="Unlock_Philly logo" title="Unlock Philly Logo"></a>
+						<a class="navbar-brand" href="/">James Tyack</a>
 					</div>
 					<ul class="nav navbar-nav">
 						<!--<li class="active">
 						<a href="http://www.tyack.net">Blog</a>
 						</li>-->
-						<li>
-							<a href="/unlockphiladelphia">Accessible stations and services</a>
-						</li>
 						<li class="active">
-							<a href="/busexplorer">Explore Buses by Neighborhood</a>
+							<a href="/busexplorer">Philly Bus Explorer</a>
 						</li>
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Other Civic Apps<b class="caret"></b></a>
@@ -66,85 +63,24 @@
 					</ul>
 				</div>
 			</div>
-
 			<!-- Begin page content -->
 			<div class="container">
-				<div class="row spacer">
-					<div class="col-md-3">
-						<div class="btn-group" data-toggle="buttons" id="lineRadios">
-							<!-- <label class="btn btn-default btn-sm">
-								<input type="radio" name="line" id="lineMFL" value="MFL">
-								Market-Frankford </label>
-							<label class="btn btn-default btn-sm">
-								<input type="radio" name="line" id="lineBSS" value="BSS">
-								Broad St </label> -->
-							<label class="btn btn-default btn-sm active">
-								<input type="radio" name="line" id="lineBSS" value="ALL">
-								Exploring Bus Routes by Neighborhood </label>
-						</div>
-						<div class="panel panel-default spacer">
-							<div class="panel-body">
+				<div class="row">
+					<div class="panel-body">
 								View routes that pass through
 								<select>
 									<% zones.each do | zone | %><option value="<%= zone['_id'] %>"><%= zone['name'] %></>
 									<% end %>
 								</select>
 							</div>
-						</div>
-						<div class="input-group spacer">
-							<span class="input-group-btn">
-								<button class="btn btn-sm" type="button">
-									Find location
-								</button> </span>
-							<input type="text" class="form-control input-sm">
-						</div>
-						<div class="panel panel-default spacer">
-							<div class="panel-body">
-								Raise accessibility awareness
-								<a href="https://twitter.com/intent/tweet?screen_name=septa_social&text=%23accessibility" class="twitter-mention-button spacer-small">Tweet to @septa</a>
-								<script>
-									! function(d, s, id) {
-										var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https';
-										if (!d.getElementById(id)) {
-											js = d.createElement(s);
-											js.id = id;
-											js.src = p + '://platform.twitter.com/widgets.js';
-											fjs.parentNode.insertBefore(js, fjs);
-										}
-									}(document, 'script', 'twitter-wjs');
-								</script>
-							</div>
-						</div>
-						<div class="panel panel-default spacer">
-							<div class="panel-body">
-								<small> Links
-									<ul>
-										<li>
-											<a href="http://www.septa.org/access/" target='_blank'>Accessible SEPTA</a>
-										</li>
-										<li>
-											<a href='http://www2.septa.org/elevators/' target='_blank'>Elevator Outages SEPTA</a>
-										</li>
-										<li>
-											<a href="http://www.libertyresources.org" target='_blank'>Liberty Resources - The Philadelphia Center for Independent Living</a>
-										</li>
-										<li>
-											<a href="http://www.septa.org/access/vis-impaired.html" target='_blank'>SEPTA Assistance for Blind & Visually Impaired Customers</a>
-										</li>
-									</ul></small>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-9">
-						
+				</div>
+				<div class="row spacer">
+					<div class="col-md-12">
 						<div id="mapcontainer">MAP</div>
-						
 					</div><!-- end of upper right column -->
 				</div><!-- end of top content row containing filters and ma -->
 				<a name="contact"></a>
 				<div class="well spacer">
-					<h4>Please join us at <a target='_blonk' href='http://codeforphilly.org/projects/Unlock_Philadelphia'>Code For Philly</a> to get involved and help improve this app!</h4>
-					Leave comments and suggestions for this app below. This is a prototype and was developed by a small project team at the Transit Apps for Philly Hackathon using data from various <a href="http://www.septa.com">SEPTA APIS</a>.
 				</div>
 				<div id="disqus_thread"></div>
 				<script type="text/javascript">
