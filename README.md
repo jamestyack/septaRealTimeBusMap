@@ -1,3 +1,5 @@
+For more background on all this stuff see http://www.tyack.net
+
 Open Data Webapps
 ============
 
